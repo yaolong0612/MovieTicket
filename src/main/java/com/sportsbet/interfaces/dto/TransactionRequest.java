@@ -1,5 +1,8 @@
 package com.sportsbet.interfaces.dto;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,6 +21,9 @@ import java.util.List;
 @Builder
 public class TransactionRequest {
 
+    @Positive(message = "Transaction ID should be a positive integer")
     private Long transactionId;
+    @Valid
+    @NotEmpty(message = "Customers cannot be empty")
     private List<CustomerDTO> customers;
 }
