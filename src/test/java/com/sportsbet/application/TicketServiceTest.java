@@ -29,9 +29,9 @@ public class TicketServiceTest {
     }
 
     @Test
-    void testDetermineAdultTicketTypeForAge30() {
+    void testDetermineAdultTicketTypeForAgeGreaterThen18ButLessThan65() {
         //given
-        int age = 30;
+        int age = generateRandomAge(18, 65);
 
         //when
         TicketType actualTicketType = ticketService.determineTicketTypeByAge(age);
@@ -65,9 +65,9 @@ public class TicketServiceTest {
     }
 
     @Test
-    void testDetermineAdultTicketTypeForAge90() {
+    void testDetermineAdultTicketTypeForAgeGreaterThan65() {
         //given
-        int age = 90;
+        int age = generateRandomAge(66, 110);
 
         //when
         TicketType actualTicketType = ticketService.determineTicketTypeByAge(age);
@@ -101,9 +101,9 @@ public class TicketServiceTest {
     }
 
     @Test
-    void testDetermineAdultTicketTypeForAge15() {
+    void testDetermineAdultTicketTypeForAgeGreaterThan11ButLessThan18() {
         //given
-        int age = 15;
+        int age = generateRandomAge(12, 18);
 
         //when
         TicketType actualTicketType = ticketService.determineTicketTypeByAge(age);
@@ -125,9 +125,9 @@ public class TicketServiceTest {
     }
 
     @Test
-    void testDetermineAdultTicketTypeForAge1() {
+    void testDetermineAdultTicketTypeForAgeLessThan10() {
         //given
-        int age = 1;
+        int age = generateRandomAge(0, 10);
 
         //when
         TicketType actualTicketType = ticketService.determineTicketTypeByAge(age);
@@ -136,7 +136,7 @@ public class TicketServiceTest {
         assertEquals(TicketType.CHILDREN, actualTicketType);
     }
 
-
+    // >=minAge and <maxAge
     public static int generateRandomAge(int minAge, int maxAge) {
         Random random = new Random();
         return random.nextInt(maxAge - minAge) + minAge;
