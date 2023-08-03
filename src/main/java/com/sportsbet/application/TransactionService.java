@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 
-
 /**
  * Application service for handling transaction operations.
  */
@@ -18,7 +17,7 @@ public class TransactionService {
 
     /**
      * Process the purchase of movie tickets for the given transaction and calculate the total cost.
-     *
+     * <p>
      * This method takes a Transaction object containing customer information and processes the purchase
      * of movie tickets for each customer. It calculates the total cost of the transaction and returns
      * a new Transaction object with the purchased movie tickets and the total cost.
@@ -29,7 +28,7 @@ public class TransactionService {
     public Transaction purchaseTickets(Transaction transaction) {
         var ticketTypeCounts = new HashMap<TicketType, Integer>();
 
-        for(var customer:transaction.getCustomers()) {
+        for (var customer : transaction.getCustomers()) {
             var ticketType = getTicketType(customer.getAge());
             int ticketCount = ticketTypeCounts.getOrDefault(ticketType, 0) + 1;
             ticketTypeCounts.put(ticketType, ticketCount);
@@ -38,7 +37,7 @@ public class TransactionService {
         var tickets = new ArrayList<Ticket>();
         var transactionTotalCost = 0.0;
 
-        for(var ticketCountEntry : ticketTypeCounts.entrySet()) {
+        for (var ticketCountEntry : ticketTypeCounts.entrySet()) {
             var ticketType = ticketCountEntry.getKey();
             var ticketQuantity = ticketCountEntry.getValue();
 
@@ -90,7 +89,7 @@ public class TransactionService {
             default:
                 costPerTicket = 0.0;
         }
-        return ticket.getQuantity() *  costPerTicket;
+        return ticket.getQuantity() * costPerTicket;
     }
 
     /**
