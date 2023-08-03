@@ -1,5 +1,6 @@
 package com.sportsbet.application;
 
+import com.sportsbet.domain.Ticket;
 import com.sportsbet.domain.TicketType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,10 +20,10 @@ public class TicketServiceTest {
     @Test
     void testDetermineAdultTicketTypeForAge18() {
         //given
-        int age = 18;
+        var age = 18;
 
         //when
-        TicketType actualTicketType = ticketService.determineTicketTypeByAge(age);
+        var actualTicketType = ticketService.determineTicketTypeByAge(age);
 
         //should
         assertEquals(TicketType.ADULT, actualTicketType);
@@ -31,10 +32,10 @@ public class TicketServiceTest {
     @Test
     void testDetermineAdultTicketTypeForAgeGreaterThen18ButLessThan65() {
         //given
-        int age = generateRandomAge(18, 65);
+        var age = generateRandomInt(18, 65);
 
         //when
-        TicketType actualTicketType = ticketService.determineTicketTypeByAge(age);
+        var actualTicketType = ticketService.determineTicketTypeByAge(age);
 
         //should
         assertEquals(TicketType.ADULT, actualTicketType);
@@ -43,10 +44,10 @@ public class TicketServiceTest {
     @Test
     void testDetermineAdultTicketTypeForAge64() {
         //given
-        int age = 64;
+        var age = 64;
 
         //when
-        TicketType actualTicketType = ticketService.determineTicketTypeByAge(age);
+        var actualTicketType = ticketService.determineTicketTypeByAge(age);
 
         //should
         assertEquals(TicketType.ADULT, actualTicketType);
@@ -55,10 +56,10 @@ public class TicketServiceTest {
     @Test
     void testDetermineAdultTicketTypeForAge65() {
         //given
-        int age = 65;
+        var age = 65;
 
         //when
-        TicketType actualTicketType = ticketService.determineTicketTypeByAge(age);
+        var actualTicketType = ticketService.determineTicketTypeByAge(age);
 
         //should
         assertEquals(TicketType.SENIOR, actualTicketType);
@@ -67,10 +68,10 @@ public class TicketServiceTest {
     @Test
     void testDetermineAdultTicketTypeForAgeGreaterThan65() {
         //given
-        int age = generateRandomAge(66, 110);
+        var age = generateRandomInt(66, 110);
 
         //when
-        TicketType actualTicketType = ticketService.determineTicketTypeByAge(age);
+        var actualTicketType = ticketService.determineTicketTypeByAge(age);
 
         //should
         assertEquals(TicketType.SENIOR, actualTicketType);
@@ -79,10 +80,10 @@ public class TicketServiceTest {
     @Test
     void testDetermineAdultTicketTypeForAge11() {
         //given
-        int age = 11;
+        var age = 11;
 
         //when
-        TicketType actualTicketType = ticketService.determineTicketTypeByAge(age);
+        var actualTicketType = ticketService.determineTicketTypeByAge(age);
 
         //should
         assertEquals(TicketType.TEEN, actualTicketType);
@@ -91,10 +92,10 @@ public class TicketServiceTest {
     @Test
     void testDetermineAdultTicketTypeForAge17() {
         //given
-        int age = 17;
+        var age = 17;
 
         //when
-        TicketType actualTicketType = ticketService.determineTicketTypeByAge(age);
+        var actualTicketType = ticketService.determineTicketTypeByAge(age);
 
         //should
         assertEquals(TicketType.TEEN, actualTicketType);
@@ -103,10 +104,10 @@ public class TicketServiceTest {
     @Test
     void testDetermineAdultTicketTypeForAgeGreaterThan11ButLessThan18() {
         //given
-        int age = generateRandomAge(12, 18);
+        var age = generateRandomInt(12, 18);
 
         //when
-        TicketType actualTicketType = ticketService.determineTicketTypeByAge(age);
+        var actualTicketType = ticketService.determineTicketTypeByAge(age);
 
         //should
         assertEquals(TicketType.TEEN, actualTicketType);
@@ -115,10 +116,10 @@ public class TicketServiceTest {
     @Test
     void testDetermineAdultTicketTypeForAge10() {
         //given
-        int age = 10;
+        var age = 10;
 
         //when
-        TicketType actualTicketType = ticketService.determineTicketTypeByAge(age);
+        var actualTicketType = ticketService.determineTicketTypeByAge(age);
 
         //should
         assertEquals(TicketType.CHILDREN, actualTicketType);
@@ -127,19 +128,131 @@ public class TicketServiceTest {
     @Test
     void testDetermineAdultTicketTypeForAgeLessThan10() {
         //given
-        int age = generateRandomAge(0, 10);
+        var age = generateRandomInt(0, 10);
 
         //when
-        TicketType actualTicketType = ticketService.determineTicketTypeByAge(age);
+        var actualTicketType = ticketService.determineTicketTypeByAge(age);
 
         //should
         assertEquals(TicketType.CHILDREN, actualTicketType);
     }
 
-    // >=minAge and <maxAge
-    public static int generateRandomAge(int minAge, int maxAge) {
+    @Test
+    void testCalculateTicketTotalCostFor1AdultTicket() {
+        //given
+        int quantity = 1;
+        var ticket = Ticket.builder().ticketType(TicketType.ADULT).quantity(quantity).build();
+
+        //when
+        var actualTotalCost = ticketService.calculateTicketTotalCost(ticket);
+
+        //should
+        var expectedTotalCost = 25.00 * quantity;
+        assertEquals(expectedTotalCost, actualTotalCost);
+    }
+
+    @Test
+    void testCalculateTicketTotalCostForMoreThan1AdultTicket() {
+        //given
+        int quantity = generateRandomInt(2, Integer.MAX_VALUE);
+        var ticket = Ticket.builder().ticketType(TicketType.ADULT).quantity(quantity).build();
+
+        //when
+        var actualTotalCost = ticketService.calculateTicketTotalCost(ticket);
+
+        //should
+        var expectedTotalCost = 25.00 * quantity;
+        assertEquals(expectedTotalCost, actualTotalCost);
+    }
+
+    @Test
+    void testCalculateTicketTotalCostFor1SeniorTicket() {
+        //given
+        int quantity = 1;
+        var ticket = Ticket.builder().ticketType(TicketType.SENIOR).quantity(quantity).build();
+
+        //when
+        var actualTotalCost = ticketService.calculateTicketTotalCost(ticket);
+
+        //should
+        var expectedTotalCost = 25.00 * 0.7 * quantity;
+        assertEquals(expectedTotalCost, actualTotalCost);
+    }
+
+    @Test
+    void testCalculateTicketTotalCostForMoreThan1SeniorTicket() {
+        //given
+        int quantity = generateRandomInt(2, Integer.MAX_VALUE);
+        var ticket = Ticket.builder().ticketType(TicketType.SENIOR).quantity(quantity).build();
+
+        //when
+        var actualTotalCost = ticketService.calculateTicketTotalCost(ticket);
+
+        //should
+        var expectedTotalCost = 25.00 * 0.7 * quantity;
+        assertEquals(expectedTotalCost, actualTotalCost);
+    }
+
+    @Test
+    void testCalculateTicketTotalCostFor1TeenTicket() {
+        //given
+        int quantity = 1;
+        var ticket = Ticket.builder().ticketType(TicketType.TEEN).quantity(quantity).build();
+
+        //when
+        var actualTotalCost = ticketService.calculateTicketTotalCost(ticket);
+
+        //should
+        var expectedTotalCost = 12.00 * quantity;
+        assertEquals(expectedTotalCost, actualTotalCost);
+    }
+
+    @Test
+    void testCalculateTicketTotalCostForMoreThan1TeenTicket() {
+        //given
+        int quantity = generateRandomInt(2, Integer.MAX_VALUE);
+        var ticket = Ticket.builder().ticketType(TicketType.TEEN).quantity(quantity).build();
+
+        //when
+        var actualTotalCost = ticketService.calculateTicketTotalCost(ticket);
+
+        //should
+        var expectedTotalCost = 12.00 * quantity;
+        assertEquals(expectedTotalCost, actualTotalCost);
+    }
+
+    @Test
+    void testCalculateTicketTotalCostForLessThan3ChildrenTicket() {
+        //given
+        int quantity = generateRandomInt(1, 3);
+        var ticket = Ticket.builder().ticketType(TicketType.CHILDREN).quantity(quantity).build();
+
+        //when
+        var actualTotalCost = ticketService.calculateTicketTotalCost(ticket);
+
+        //should
+        var expectedTotalCost = 5.00 * quantity;
+        assertEquals(expectedTotalCost, actualTotalCost);
+    }
+
+    @Test
+    void testCalculateTicketTotalCostFor3OrMoreChildrenTicket() {
+        //given
+        int quantity = generateRandomInt(3, Integer.MAX_VALUE);
+        var ticket = Ticket.builder().ticketType(TicketType.CHILDREN).quantity(quantity).build();
+
+        //when
+        var actualTotalCost = ticketService.calculateTicketTotalCost(ticket);
+
+        //should
+        var expectedTotalCost = 5.00 * quantity * 0.75;
+        assertEquals(expectedTotalCost, actualTotalCost);
+    }
+
+    // >=min and <max
+    public static int generateRandomInt(int min, int max) {
         Random random = new Random();
-        return random.nextInt(maxAge - minAge) + minAge;
+        return random.nextInt(max - min) + min;
     }
 
 }
