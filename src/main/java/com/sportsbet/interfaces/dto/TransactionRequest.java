@@ -3,6 +3,7 @@ package com.sportsbet.interfaces.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,6 +25,7 @@ import java.util.List;
 public class TransactionRequest {
 
     @Positive(message = "Transaction ID should be a positive integer")
+    @NotNull(message = "Please provide transaction id")
     @Schema(description = "Unique id of the transaction", requiredMode = Schema.RequiredMode.REQUIRED)
     private Long transactionId;
 
