@@ -1,5 +1,6 @@
 package com.sportsbet.interfaces.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Positive;
@@ -19,11 +20,15 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Schema(description = "Transaction request with transaction id and customer information list")
 public class TransactionRequest {
 
     @Positive(message = "Transaction ID should be a positive integer")
+    @Schema(description = "Unique id of the transaction", requiredMode = Schema.RequiredMode.REQUIRED)
     private Long transactionId;
+
     @Valid
     @NotEmpty(message = "Customers cannot be empty")
+    @Schema(description = "List of customer information in the transaction", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<CustomerDTO> customers;
 }

@@ -1,5 +1,6 @@
 package com.sportsbet.interfaces.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,9 +17,13 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Schema(description = "Transaction information with tickets and total cost")
 public class TransactionResponse {
 
+    @Schema(description = "Unique id of the transaction")
     private Long transactionId;
+    @Schema(description = "List of tickets")
     private List<TicketDTO> tickets;
+    @Schema(description = "Total cost of the transaction")
     private double totalCost;
 }

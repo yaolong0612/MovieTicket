@@ -1,5 +1,6 @@
 package com.sportsbet.interfaces.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,9 +17,12 @@ import org.hibernate.validator.constraints.Range;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Schema(description = "Customer information")
 public class CustomerDTO {
 
+    @Schema(description = "Customer name")
     private String name;
     @Range(min = 0, max = 120, message = "Age should be from 0 to 120")
+    @Schema(description = "Customer age", requiredMode = Schema.RequiredMode.REQUIRED)
     private int age;
 }

@@ -12,6 +12,11 @@ import lombok.Getter;
 public enum ResultCode {
 
     /**
+     * Result code for a successful operation.
+     */
+    SUCCESS(HttpServletResponse.SC_OK, "Operation is Successful"),
+
+    /**
      * Result code for the scenario when the HTTP message in a request cannot be read.
      */
     MSG_NOT_READABLE(HttpServletResponse.SC_BAD_REQUEST, "Message Can't be Read"),
@@ -40,4 +45,5 @@ public enum ResultCode {
      * The description message associated with the result code.
      */
     private final String msg;
+
 }
