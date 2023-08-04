@@ -12,7 +12,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
-import org.mockito.InjectMocks;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -37,7 +36,7 @@ public class TransactionControllerTest {
     private EntityConverter converter;
     @MockBean
     private TransactionService transactionService;
-    @InjectMocks
+    @MockBean
     private TransactionController transactionController;
 
     @BeforeEach
@@ -145,6 +144,25 @@ public class TransactionControllerTest {
         var customerDTOS = new ArrayList<CustomerDTO>();
         customerDTOS.add(CustomerDTO.builder().name("Billy Kidd").age(1).build());
         TransactionRequest request = TransactionRequest.builder().customers(customerDTOS).build();
+
+        //when
+        when(converter.convert(any(TransactionRequest.class), Transaction.class)).thenReturn(new Transaction());
+        when(transactionService.purchaseTickets(ArgumentMatchers.any())).thenReturn(new Transaction());
+        when(converter.convert(any(Transaction.class), TransactionResponse.class)).thenReturn(new TransactionResponse());
+
+        //should
+        mockMvc.perform(
+                post("/v1/transactions").contentType(MediaType.APPLICATION_JSON).content(asJsonString(request))
+        ).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testGetTicketsValidRequestShouldReturn400WithEmptyCustomerAge() throws Exception {
+        //given
+        var transactionId = 1L;
+        var customerDTOS = new ArrayList<CustomerDTO>();
+        customerDTOS.add(CustomerDTO.builder().name("Billy Kidd").build());
+        TransactionRequest request = TransactionRequest.builder().transactionId(transactionId).customers(customerDTOS).build();
 
         //when
         when(converter.convert(any(TransactionRequest.class), Transaction.class)).thenReturn(new Transaction());
