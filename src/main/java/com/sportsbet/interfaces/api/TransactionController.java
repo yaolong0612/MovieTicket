@@ -1,6 +1,7 @@
 package com.sportsbet.interfaces.api;
 
 import com.sportsbet.application.TransactionService;
+import com.sportsbet.domain.Transaction;
 import com.sportsbet.infrastructure.rest.ErrorResponse;
 import com.sportsbet.infrastructure.utils.EntityConverter;
 import com.sportsbet.interfaces.dto.TransactionRequest;
@@ -45,7 +46,9 @@ public class TransactionController {
     })
     @PostMapping
     public ResponseEntity<TransactionResponse> getTickets(@Valid @RequestBody TransactionRequest transactionRequest) {
-        return null;
+        var requestTransaction = converter.convert(transactionRequest, Transaction.class);
+        var responseTransaction = transactionService.purchaseTickets(requestTransaction);
+        return ResponseEntity.ok(converter.convert(responseTransaction, TransactionResponse.class));
     }
 
 }
