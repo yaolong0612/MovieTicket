@@ -3,7 +3,9 @@ package com.sportsbet.interfaces.api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sportsbet.application.TransactionService;
 import com.sportsbet.domain.Transaction;
+import com.sportsbet.infrastructure.rest.ErrorResponse;
 import com.sportsbet.infrastructure.rest.GlobalExceptionTranslator;
+import com.sportsbet.infrastructure.rest.ResultCode;
 import com.sportsbet.infrastructure.utils.EntityConverter;
 import com.sportsbet.interfaces.dto.CustomerDTO;
 import com.sportsbet.interfaces.dto.TransactionRequest;
@@ -17,11 +19,13 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.ArrayList;
 
 import static org.hamcrest.Matchers.any;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -61,7 +65,7 @@ public class TransactionControllerTest {
 
         //should
         mockMvc.perform(
-                post("/v1/transactions").contentType(MediaType.APPLICATION_JSON).content(asJsonString(request))
+                post("/v1/transactions").contentType(MediaType.APPLICATION_JSON).content(toJSONString(request))
         ).andExpect(status().isOk());
     }
 
@@ -79,9 +83,14 @@ public class TransactionControllerTest {
         when(converter.convert(any(Transaction.class), TransactionResponse.class)).thenReturn(new TransactionResponse());
 
         //should
-        mockMvc.perform(
-                post("/v1/transactions").contentType(MediaType.APPLICATION_JSON).content(asJsonString(request))
-        ).andExpect(status().isBadRequest());
+        MvcResult mvcResult = mockMvc.perform(
+                post("/v1/transactions").contentType(MediaType.APPLICATION_JSON).content(toJSONString(request))
+        ).andExpect(status().isBadRequest()).andReturn();
+        ErrorResponse actualErrorResponse = jsonToObject(mvcResult.getResponse().getContentAsString(), ErrorResponse.class);
+        ErrorResponse expectedErrorResponse = ErrorResponse.builder()
+                .message(ResultCode.PARAM_VALID_ERROR.getMsg())
+                .build();
+        assertEquals(expectedErrorResponse.getMessage(), actualErrorResponse.getMessage());
     }
 
     @Test
@@ -98,9 +107,14 @@ public class TransactionControllerTest {
         when(converter.convert(any(Transaction.class), TransactionResponse.class)).thenReturn(new TransactionResponse());
 
         //should
-        mockMvc.perform(
-                post("/v1/transactions").contentType(MediaType.APPLICATION_JSON).content(asJsonString(request))
-        ).andExpect(status().isBadRequest());
+        MvcResult mvcResult = mockMvc.perform(
+                post("/v1/transactions").contentType(MediaType.APPLICATION_JSON).content(toJSONString(request))
+        ).andExpect(status().isBadRequest()).andReturn();
+        ErrorResponse actualErrorResponse = jsonToObject(mvcResult.getResponse().getContentAsString(), ErrorResponse.class);
+        ErrorResponse expectedErrorResponse = ErrorResponse.builder()
+                .message(ResultCode.PARAM_VALID_ERROR.getMsg())
+                .build();
+        assertEquals(expectedErrorResponse.getMessage(), actualErrorResponse.getMessage());
     }
 
     @Test
@@ -116,9 +130,14 @@ public class TransactionControllerTest {
         when(converter.convert(any(Transaction.class), TransactionResponse.class)).thenReturn(new TransactionResponse());
 
         //should
-        mockMvc.perform(
-                post("/v1/transactions").contentType(MediaType.APPLICATION_JSON).content(asJsonString(request))
-        ).andExpect(status().isBadRequest());
+        MvcResult mvcResult = mockMvc.perform(
+                post("/v1/transactions").contentType(MediaType.APPLICATION_JSON).content(toJSONString(request))
+        ).andExpect(status().isBadRequest()).andReturn();
+        ErrorResponse actualErrorResponse = jsonToObject(mvcResult.getResponse().getContentAsString(), ErrorResponse.class);
+        ErrorResponse expectedErrorResponse = ErrorResponse.builder()
+                .message(ResultCode.PARAM_VALID_ERROR.getMsg())
+                .build();
+        assertEquals(expectedErrorResponse.getMessage(), actualErrorResponse.getMessage());
     }
 
     @Test
@@ -133,9 +152,14 @@ public class TransactionControllerTest {
         when(converter.convert(any(Transaction.class), TransactionResponse.class)).thenReturn(new TransactionResponse());
 
         //should
-        mockMvc.perform(
-                post("/v1/transactions").contentType(MediaType.APPLICATION_JSON).content(asJsonString(request))
-        ).andExpect(status().isBadRequest());
+        MvcResult mvcResult = mockMvc.perform(
+                post("/v1/transactions").contentType(MediaType.APPLICATION_JSON).content(toJSONString(request))
+        ).andExpect(status().isBadRequest()).andReturn();
+        ErrorResponse actualErrorResponse = jsonToObject(mvcResult.getResponse().getContentAsString(), ErrorResponse.class);
+        ErrorResponse expectedErrorResponse = ErrorResponse.builder()
+                .message(ResultCode.PARAM_VALID_ERROR.getMsg())
+                .build();
+        assertEquals(expectedErrorResponse.getMessage(), actualErrorResponse.getMessage());
     }
 
     @Test
@@ -151,9 +175,14 @@ public class TransactionControllerTest {
         when(converter.convert(any(Transaction.class), TransactionResponse.class)).thenReturn(new TransactionResponse());
 
         //should
-        mockMvc.perform(
-                post("/v1/transactions").contentType(MediaType.APPLICATION_JSON).content(asJsonString(request))
-        ).andExpect(status().isBadRequest());
+        MvcResult mvcResult = mockMvc.perform(
+                post("/v1/transactions").contentType(MediaType.APPLICATION_JSON).content(toJSONString(request))
+        ).andExpect(status().isBadRequest()).andReturn();
+        ErrorResponse actualErrorResponse = jsonToObject(mvcResult.getResponse().getContentAsString(), ErrorResponse.class);
+        ErrorResponse expectedErrorResponse = ErrorResponse.builder()
+                .message(ResultCode.PARAM_VALID_ERROR.getMsg())
+                .build();
+        assertEquals(expectedErrorResponse.getMessage(), actualErrorResponse.getMessage());
     }
 
     @Test
@@ -170,12 +199,26 @@ public class TransactionControllerTest {
         when(converter.convert(any(Transaction.class), TransactionResponse.class)).thenReturn(new TransactionResponse());
 
         //should
-        mockMvc.perform(
-                post("/v1/transactions").contentType(MediaType.APPLICATION_JSON).content(asJsonString(request))
-        ).andExpect(status().isBadRequest());
+        MvcResult mvcResult = mockMvc.perform(
+                post("/v1/transactions").contentType(MediaType.APPLICATION_JSON).content(toJSONString(request))
+        ).andExpect(status().isBadRequest()).andReturn();
+        ErrorResponse actualErrorResponse = jsonToObject(mvcResult.getResponse().getContentAsString(), ErrorResponse.class);
+        ErrorResponse expectedErrorResponse = ErrorResponse.builder()
+                .message(ResultCode.PARAM_VALID_ERROR.getMsg())
+                .build();
+        assertEquals(expectedErrorResponse.getMessage(), actualErrorResponse.getMessage());
     }
 
-    public static String asJsonString(Object obj) {
+    private static <T> T jsonToObject(String json, Class<T> objectType) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            return objectMapper.readValue(json, objectType);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static String toJSONString(Object obj) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             return objectMapper.writeValueAsString(obj);
