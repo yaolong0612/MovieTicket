@@ -1,6 +1,10 @@
 package com.sportsbet.application;
 
 import com.sportsbet.BaseTest;
+import com.sportsbet.application.strategy.discount.ChildrenDiscountCalculator;
+import com.sportsbet.application.strategy.discount.NoDiscountCalculator;
+import com.sportsbet.application.strategy.discount.SeniorDiscountCalculator;
+import com.sportsbet.application.strategy.discount.TicketDiscountCalculatorFactory;
 import com.sportsbet.application.strategy.price.AdultTicketPriceCalculator;
 import com.sportsbet.application.strategy.price.ChildrenTicketPriceCalculator;
 import com.sportsbet.application.strategy.price.SeniorTicketPriceCalculator;
@@ -26,6 +30,9 @@ public class TicketServiceTest extends BaseTest {
 
     @Mock
     private TicketPriceCalculatorFactory ticketPriceCalculatorFactory;
+
+    @Mock
+    private TicketDiscountCalculatorFactory ticketDiscountCalculatorFactory;
 
     @InjectMocks
     private TicketService ticketService;
@@ -93,6 +100,7 @@ public class TicketServiceTest extends BaseTest {
 
         //when
         when(ticketPriceCalculatorFactory.getPriceCalculator(any(Ticket.class))).thenReturn(new AdultTicketPriceCalculator());
+        when(ticketDiscountCalculatorFactory.getPriceCalculator(any(Ticket.class))).thenReturn(new NoDiscountCalculator());
         var actualTotalCost = ticketService.calculateTicketTotalCost(ticket);
 
         //should
@@ -108,6 +116,7 @@ public class TicketServiceTest extends BaseTest {
 
         //when
         when(ticketPriceCalculatorFactory.getPriceCalculator(any(Ticket.class))).thenReturn(new AdultTicketPriceCalculator());
+        when(ticketDiscountCalculatorFactory.getPriceCalculator(any(Ticket.class))).thenReturn(new NoDiscountCalculator());
         var actualTotalCost = ticketService.calculateTicketTotalCost(ticket);
 
         //should
@@ -123,6 +132,7 @@ public class TicketServiceTest extends BaseTest {
 
         //when
         when(ticketPriceCalculatorFactory.getPriceCalculator(any(Ticket.class))).thenReturn(new SeniorTicketPriceCalculator());
+        when(ticketDiscountCalculatorFactory.getPriceCalculator(any(Ticket.class))).thenReturn(new SeniorDiscountCalculator());
         var actualTotalCost = ticketService.calculateTicketTotalCost(ticket);
 
         //should
@@ -138,6 +148,7 @@ public class TicketServiceTest extends BaseTest {
 
         //when
         when(ticketPriceCalculatorFactory.getPriceCalculator(any(Ticket.class))).thenReturn(new SeniorTicketPriceCalculator());
+        when(ticketDiscountCalculatorFactory.getPriceCalculator(any(Ticket.class))).thenReturn(new SeniorDiscountCalculator());
         var actualTotalCost = ticketService.calculateTicketTotalCost(ticket);
 
         //should
@@ -153,6 +164,7 @@ public class TicketServiceTest extends BaseTest {
 
         //when
         when(ticketPriceCalculatorFactory.getPriceCalculator(any(Ticket.class))).thenReturn(new TeenTicketPriceCalculator());
+        when(ticketDiscountCalculatorFactory.getPriceCalculator(any(Ticket.class))).thenReturn(new NoDiscountCalculator());
         var actualTotalCost = ticketService.calculateTicketTotalCost(ticket);
 
         //should
@@ -168,6 +180,7 @@ public class TicketServiceTest extends BaseTest {
 
         //when
         when(ticketPriceCalculatorFactory.getPriceCalculator(any(Ticket.class))).thenReturn(new TeenTicketPriceCalculator());
+        when(ticketDiscountCalculatorFactory.getPriceCalculator(any(Ticket.class))).thenReturn(new NoDiscountCalculator());
         var actualTotalCost = ticketService.calculateTicketTotalCost(ticket);
 
         //should
@@ -183,6 +196,7 @@ public class TicketServiceTest extends BaseTest {
 
         //when
         when(ticketPriceCalculatorFactory.getPriceCalculator(any(Ticket.class))).thenReturn(new ChildrenTicketPriceCalculator());
+        when(ticketDiscountCalculatorFactory.getPriceCalculator(any(Ticket.class))).thenReturn(new NoDiscountCalculator());
         var actualTotalCost = ticketService.calculateTicketTotalCost(ticket);
 
         //should
@@ -198,6 +212,7 @@ public class TicketServiceTest extends BaseTest {
 
         //when
         when(ticketPriceCalculatorFactory.getPriceCalculator(any(Ticket.class))).thenReturn(new ChildrenTicketPriceCalculator());
+        when(ticketDiscountCalculatorFactory.getPriceCalculator(any(Ticket.class))).thenReturn(new ChildrenDiscountCalculator());
         var actualTotalCost = ticketService.calculateTicketTotalCost(ticket);
 
         //should
