@@ -9,7 +9,6 @@ import com.sportsbet.application.strategy.price.TicketPriceCalculatorFactory;
 import com.sportsbet.domain.Customer;
 import com.sportsbet.domain.Ticket;
 import com.sportsbet.domain.TicketType;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -20,6 +19,7 @@ import org.mockito.Mock;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 public class TicketServiceTest extends BaseTest {
@@ -85,14 +85,14 @@ public class TicketServiceTest extends BaseTest {
         );
     }
 
-    @Test
+   @Test
     void testCalculateTicketTotalCostFor1AdultTicket() {
         //given
         int quantity = 1;
         var ticket = Ticket.builder().ticketType(TicketType.ADULT).quantity(quantity).build();
 
         //when
-        when(ticketPriceCalculatorFactory.getCalculator(TicketType.ADULT)).thenReturn(new AdultTicketPriceCalculator());
+        when(ticketPriceCalculatorFactory.getPriceCalculator(any(Ticket.class))).thenReturn(new AdultTicketPriceCalculator());
         var actualTotalCost = ticketService.calculateTicketTotalCost(ticket);
 
         //should
@@ -107,7 +107,7 @@ public class TicketServiceTest extends BaseTest {
         var ticket = Ticket.builder().ticketType(TicketType.ADULT).quantity(quantity).build();
 
         //when
-        when(ticketPriceCalculatorFactory.getCalculator(TicketType.ADULT)).thenReturn(new AdultTicketPriceCalculator());
+        when(ticketPriceCalculatorFactory.getPriceCalculator(any(Ticket.class))).thenReturn(new AdultTicketPriceCalculator());
         var actualTotalCost = ticketService.calculateTicketTotalCost(ticket);
 
         //should
@@ -122,7 +122,7 @@ public class TicketServiceTest extends BaseTest {
         var ticket = Ticket.builder().ticketType(TicketType.SENIOR).quantity(quantity).build();
 
         //when
-        when(ticketPriceCalculatorFactory.getCalculator(TicketType.SENIOR)).thenReturn(new SeniorTicketPriceCalculator());
+        when(ticketPriceCalculatorFactory.getPriceCalculator(any(Ticket.class))).thenReturn(new SeniorTicketPriceCalculator());
         var actualTotalCost = ticketService.calculateTicketTotalCost(ticket);
 
         //should
@@ -137,7 +137,7 @@ public class TicketServiceTest extends BaseTest {
         var ticket = Ticket.builder().ticketType(TicketType.SENIOR).quantity(quantity).build();
 
         //when
-        when(ticketPriceCalculatorFactory.getCalculator(TicketType.SENIOR)).thenReturn(new SeniorTicketPriceCalculator());
+        when(ticketPriceCalculatorFactory.getPriceCalculator(any(Ticket.class))).thenReturn(new SeniorTicketPriceCalculator());
         var actualTotalCost = ticketService.calculateTicketTotalCost(ticket);
 
         //should
@@ -152,7 +152,7 @@ public class TicketServiceTest extends BaseTest {
         var ticket = Ticket.builder().ticketType(TicketType.TEEN).quantity(quantity).build();
 
         //when
-        when(ticketPriceCalculatorFactory.getCalculator(TicketType.TEEN)).thenReturn(new TeenTicketPriceCalculator());
+        when(ticketPriceCalculatorFactory.getPriceCalculator(any(Ticket.class))).thenReturn(new TeenTicketPriceCalculator());
         var actualTotalCost = ticketService.calculateTicketTotalCost(ticket);
 
         //should
@@ -167,7 +167,7 @@ public class TicketServiceTest extends BaseTest {
         var ticket = Ticket.builder().ticketType(TicketType.TEEN).quantity(quantity).build();
 
         //when
-        when(ticketPriceCalculatorFactory.getCalculator(TicketType.TEEN)).thenReturn(new TeenTicketPriceCalculator());
+        when(ticketPriceCalculatorFactory.getPriceCalculator(any(Ticket.class))).thenReturn(new TeenTicketPriceCalculator());
         var actualTotalCost = ticketService.calculateTicketTotalCost(ticket);
 
         //should
@@ -182,7 +182,7 @@ public class TicketServiceTest extends BaseTest {
         var ticket = Ticket.builder().ticketType(TicketType.CHILDREN).quantity(quantity).build();
 
         //when
-        when(ticketPriceCalculatorFactory.getCalculator(TicketType.CHILDREN)).thenReturn(new ChildrenTicketPriceCalculator());
+        when(ticketPriceCalculatorFactory.getPriceCalculator(any(Ticket.class))).thenReturn(new ChildrenTicketPriceCalculator());
         var actualTotalCost = ticketService.calculateTicketTotalCost(ticket);
 
         //should
@@ -197,7 +197,7 @@ public class TicketServiceTest extends BaseTest {
         var ticket = Ticket.builder().ticketType(TicketType.CHILDREN).quantity(quantity).build();
 
         //when
-        when(ticketPriceCalculatorFactory.getCalculator(TicketType.CHILDREN)).thenReturn(new ChildrenTicketPriceCalculator());
+        when(ticketPriceCalculatorFactory.getPriceCalculator(any(Ticket.class))).thenReturn(new ChildrenTicketPriceCalculator());
         var actualTotalCost = ticketService.calculateTicketTotalCost(ticket);
 
         //should

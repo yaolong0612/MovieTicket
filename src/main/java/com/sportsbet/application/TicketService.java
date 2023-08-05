@@ -42,7 +42,7 @@ public class TicketService {
      * @return The total cost of the tickets of the given type and quantity.
      */
     public double calculateTicketTotalCost(Ticket ticket) {
-        TicketPriceCalculator ticketPriceCalculator = ticketPriceCalculatorFactory.getCalculator(ticket.getTicketType());
+        TicketPriceCalculator ticketPriceCalculator = ticketPriceCalculatorFactory.getPriceCalculator(ticket);
         var totalCost = ticketPriceCalculator.calculatePrice(ticket).getTotalCost();
         if (ticket.getTicketType() == TicketType.SENIOR) {
             totalCost = totalCost * 0.7;

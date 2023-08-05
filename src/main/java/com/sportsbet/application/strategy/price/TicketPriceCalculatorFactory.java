@@ -1,5 +1,6 @@
 package com.sportsbet.application.strategy.price;
 
+import com.sportsbet.domain.Ticket;
 import com.sportsbet.domain.TicketType;
 import com.sportsbet.infrastructure.error.ServiceException;
 import lombok.RequiredArgsConstructor;
@@ -19,14 +20,14 @@ public class TicketPriceCalculatorFactory {
     /**
      * Gets the ticket price calculator associated with the specified ticket type.
      *
-     * @param ticketType The ticket type for which to retrieve the calculator.
+     * @param ticket The ticket for which to retrieve the calculator.
      * @return The ticket price calculator associated with the specified ticket type.
      * @throws ServiceException if no matching ticket price calculator is found for the specified ticket type.
      */
-    public TicketPriceCalculator getCalculator(TicketType ticketType) {
+    public TicketPriceCalculator getPriceCalculator(Ticket ticket) {
         return calculators.stream()
-                .filter(calculator -> calculator.getTicketType() == ticketType)
+                .filter(calculator -> calculator.getTicketType() == ticket.getTicketType())
                 .findFirst()
-                .orElseThrow(() -> new ServiceException("No matching ticket price calculator for type " + ticketType));
+                .orElseThrow(() -> new ServiceException("No matching ticket price calculator for type " + ticket.getTicketType()));
     }
 }
