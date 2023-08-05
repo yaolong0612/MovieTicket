@@ -39,12 +39,26 @@ public class TicketService {
     }
 
     /**
+     * Creates a new ticket with the given ticket type and quantity.
+     *
+     * @param ticketType The type of the ticket to create.
+     * @param quantity   The quantity of the ticket to create.
+     * @return The created ticket.
+     */
+    public Ticket createTicket(TicketType ticketType, int quantity) {
+        var ticket = Ticket.builder().ticketType(ticketType).quantity(quantity).build();
+        var ticketTotalCost = calculateTicketTotalCost(ticket);
+        ticket.setTotalCost(ticketTotalCost);
+        return ticket;
+    }
+
+    /**
      * Calculates the total cost for a given ticket based on its ticket type and quantity.
      *
      * @param ticket The Ticket object for which the total cost needs to be calculated.
      * @return The total cost of the tickets of the given type and quantity.
      */
-    public double calculateTicketTotalCost(Ticket ticket) {
+    private double calculateTicketTotalCost(Ticket ticket) {
         TicketPriceCalculator ticketPriceCalculator = ticketPriceCalculatorFactory.getPriceCalculator(ticket);
         TicketDiscountCalculator ticketDiscountCalculator = ticketDiscountCalculatorFactory.getPriceCalculator(ticket);
 

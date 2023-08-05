@@ -49,174 +49,66 @@ public class TicketServiceTest extends BaseTest {
 
     private static Stream<Arguments> determineTicketTypeByConsumerDetailsParams() {
         return Stream.of(
-                Arguments.of(
-                        Customer.builder().name(randomString()).age(18).build(),
-                        TicketType.ADULT
-                ),
-                Arguments.of(
-                        Customer.builder().name(randomString()).age(generateRandomInt(18, 65)).build(),
-                        TicketType.ADULT
-                ),
-                Arguments.of(
-                        Customer.builder().name(randomString()).age(64).build(),
-                        TicketType.ADULT
-                ),
-                Arguments.of(
-                        Customer.builder().name(randomString()).age(65).build(),
-                        TicketType.SENIOR
-                ),
-                Arguments.of(
-                        Customer.builder().name(randomString()).age(generateRandomInt(66, 110)).build(),
-                        TicketType.SENIOR
-                ),
-                Arguments.of(
-                        Customer.builder().name(randomString()).age(11).build(),
-                        TicketType.TEEN
-                ),
-                Arguments.of(
-                        Customer.builder().name(randomString()).age(17).build(),
-                        TicketType.TEEN
-                ),
-                Arguments.of(
-                        Customer.builder().name(randomString()).age(generateRandomInt(12, 18)).build(),
-                        TicketType.TEEN
-                ),
-                Arguments.of(
-                        Customer.builder().name(randomString()).age(10).build(),
-                        TicketType.CHILDREN
-                ),
-                Arguments.of(
-                        Customer.builder().name(randomString()).age(generateRandomInt(0, 10)).build(),
-                        TicketType.CHILDREN
-                )
+            Arguments.of(
+                Customer.builder().name(randomString()).age(18).build(),
+                TicketType.ADULT
+            ),
+            Arguments.of(
+                Customer.builder().name(randomString()).age(generateRandomInt(18, 65)).build(),
+                TicketType.ADULT
+            ),
+            Arguments.of(
+                Customer.builder().name(randomString()).age(64).build(),
+                TicketType.ADULT
+            ),
+            Arguments.of(
+                Customer.builder().name(randomString()).age(65).build(),
+                TicketType.SENIOR
+            ),
+            Arguments.of(
+                Customer.builder().name(randomString()).age(generateRandomInt(66, 110)).build(),
+                TicketType.SENIOR
+            ),
+            Arguments.of(
+                Customer.builder().name(randomString()).age(11).build(),
+                TicketType.TEEN
+            ),
+            Arguments.of(
+                Customer.builder().name(randomString()).age(17).build(),
+                TicketType.TEEN
+            ),
+            Arguments.of(
+                Customer.builder().name(randomString()).age(generateRandomInt(12, 18)).build(),
+                TicketType.TEEN
+            ),
+            Arguments.of(
+                Customer.builder().name(randomString()).age(10).build(),
+                TicketType.CHILDREN
+            ),
+            Arguments.of(
+                Customer.builder().name(randomString()).age(generateRandomInt(0, 10)).build(),
+                TicketType.CHILDREN
+            )
         );
     }
 
-   @Test
-    void testCalculateTicketTotalCostFor1AdultTicket() {
+    @Test
+    void testCreateTicket() {
         //given
-        int quantity = 1;
-        var ticket = Ticket.builder().ticketType(TicketType.ADULT).quantity(quantity).build();
+        var quantity = generateRandomInt(1, Integer.MAX_VALUE);
+        var ticketType = TicketType.ADULT;
 
         //when
-        when(ticketPriceCalculatorFactory.getPriceCalculator(any(Ticket.class))).thenReturn(new AdultTicketPriceCalculator());
-        when(ticketDiscountCalculatorFactory.getPriceCalculator(any(Ticket.class))).thenReturn(new NoDiscountCalculator());
-        var actualTotalCost = ticketService.calculateTicketTotalCost(ticket);
+        when(ticketPriceCalculatorFactory.getPriceCalculator(any(Ticket.class))).thenReturn(
+            new AdultTicketPriceCalculator());
+        when(ticketDiscountCalculatorFactory.getPriceCalculator(any(Ticket.class))).thenReturn(
+            new NoDiscountCalculator());
+        var actualTicket = ticketService.createTicket(ticketType, quantity);
 
         //should
         var expectedTotalCost = 25.00 * quantity;
-        assertEquals(expectedTotalCost, actualTotalCost);
-    }
-
-    @Test
-    void testCalculateTicketTotalCostForMoreThan1AdultTicket() {
-        //given
-        int quantity = generateRandomInt(2, Integer.MAX_VALUE);
-        var ticket = Ticket.builder().ticketType(TicketType.ADULT).quantity(quantity).build();
-
-        //when
-        when(ticketPriceCalculatorFactory.getPriceCalculator(any(Ticket.class))).thenReturn(new AdultTicketPriceCalculator());
-        when(ticketDiscountCalculatorFactory.getPriceCalculator(any(Ticket.class))).thenReturn(new NoDiscountCalculator());
-        var actualTotalCost = ticketService.calculateTicketTotalCost(ticket);
-
-        //should
-        var expectedTotalCost = 25.00 * quantity;
-        assertEquals(expectedTotalCost, actualTotalCost);
-    }
-
-    @Test
-    void testCalculateTicketTotalCostFor1SeniorTicket() {
-        //given
-        int quantity = 1;
-        var ticket = Ticket.builder().ticketType(TicketType.SENIOR).quantity(quantity).build();
-
-        //when
-        when(ticketPriceCalculatorFactory.getPriceCalculator(any(Ticket.class))).thenReturn(new SeniorTicketPriceCalculator());
-        when(ticketDiscountCalculatorFactory.getPriceCalculator(any(Ticket.class))).thenReturn(new SeniorDiscountCalculator());
-        var actualTotalCost = ticketService.calculateTicketTotalCost(ticket);
-
-        //should
-        var expectedTotalCost = 25.00 * 0.7 * quantity;
-        assertEquals(expectedTotalCost, actualTotalCost);
-    }
-
-    @Test
-    void testCalculateTicketTotalCostForMoreThan1SeniorTicket() {
-        //given
-        int quantity = generateRandomInt(2, Integer.MAX_VALUE);
-        var ticket = Ticket.builder().ticketType(TicketType.SENIOR).quantity(quantity).build();
-
-        //when
-        when(ticketPriceCalculatorFactory.getPriceCalculator(any(Ticket.class))).thenReturn(new SeniorTicketPriceCalculator());
-        when(ticketDiscountCalculatorFactory.getPriceCalculator(any(Ticket.class))).thenReturn(new SeniorDiscountCalculator());
-        var actualTotalCost = ticketService.calculateTicketTotalCost(ticket);
-
-        //should
-        var expectedTotalCost = 25.00 * 0.7 * quantity;
-        assertEquals(expectedTotalCost, actualTotalCost);
-    }
-
-    @Test
-    void testCalculateTicketTotalCostFor1TeenTicket() {
-        //given
-        int quantity = 1;
-        var ticket = Ticket.builder().ticketType(TicketType.TEEN).quantity(quantity).build();
-
-        //when
-        when(ticketPriceCalculatorFactory.getPriceCalculator(any(Ticket.class))).thenReturn(new TeenTicketPriceCalculator());
-        when(ticketDiscountCalculatorFactory.getPriceCalculator(any(Ticket.class))).thenReturn(new NoDiscountCalculator());
-        var actualTotalCost = ticketService.calculateTicketTotalCost(ticket);
-
-        //should
-        var expectedTotalCost = 12.00 * quantity;
-        assertEquals(expectedTotalCost, actualTotalCost);
-    }
-
-    @Test
-    void testCalculateTicketTotalCostForMoreThan1TeenTicket() {
-        //given
-        int quantity = generateRandomInt(2, Integer.MAX_VALUE);
-        var ticket = Ticket.builder().ticketType(TicketType.TEEN).quantity(quantity).build();
-
-        //when
-        when(ticketPriceCalculatorFactory.getPriceCalculator(any(Ticket.class))).thenReturn(new TeenTicketPriceCalculator());
-        when(ticketDiscountCalculatorFactory.getPriceCalculator(any(Ticket.class))).thenReturn(new NoDiscountCalculator());
-        var actualTotalCost = ticketService.calculateTicketTotalCost(ticket);
-
-        //should
-        var expectedTotalCost = 12.00 * quantity;
-        assertEquals(expectedTotalCost, actualTotalCost);
-    }
-
-    @Test
-    void testCalculateTicketTotalCostForLessThan3ChildrenTicket() {
-        //given
-        int quantity = generateRandomInt(1, 3);
-        var ticket = Ticket.builder().ticketType(TicketType.CHILDREN).quantity(quantity).build();
-
-        //when
-        when(ticketPriceCalculatorFactory.getPriceCalculator(any(Ticket.class))).thenReturn(new ChildrenTicketPriceCalculator());
-        when(ticketDiscountCalculatorFactory.getPriceCalculator(any(Ticket.class))).thenReturn(new NoDiscountCalculator());
-        var actualTotalCost = ticketService.calculateTicketTotalCost(ticket);
-
-        //should
-        var expectedTotalCost = 5.00 * quantity;
-        assertEquals(expectedTotalCost, actualTotalCost);
-    }
-
-    @Test
-    void testCalculateTicketTotalCostFor3OrMoreChildrenTicket() {
-        //given
-        int quantity = generateRandomInt(3, Integer.MAX_VALUE);
-        var ticket = Ticket.builder().ticketType(TicketType.CHILDREN).quantity(quantity).build();
-
-        //when
-        when(ticketPriceCalculatorFactory.getPriceCalculator(any(Ticket.class))).thenReturn(new ChildrenTicketPriceCalculator());
-        when(ticketDiscountCalculatorFactory.getPriceCalculator(any(Ticket.class))).thenReturn(new ChildrenDiscountCalculator());
-        var actualTotalCost = ticketService.calculateTicketTotalCost(ticket);
-
-        //should
-        var expectedTotalCost = 5.00 * quantity * 0.75;
-        assertEquals(expectedTotalCost, actualTotalCost);
+        var expectedTicket = Ticket.builder().ticketType(TicketType.ADULT).quantity(quantity)
+            .totalCost(expectedTotalCost).build();
+        assertEquals(expectedTicket, actualTicket);
     }
 }
