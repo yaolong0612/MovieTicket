@@ -11,9 +11,9 @@ public class SwaggerConfig {
     @Bean
     public OpenAPI springShopOpenAPI() {
         return new OpenAPI()
-                .info(new Info().title("Movie Ticket")
-                        .description("Movie Ticket API doc")
-                        .version("v1"));
+            .info(new Info().title("Movie Ticket")
+                .description("Movie Ticket API doc")
+                .version("v1"));
     }
 
 }

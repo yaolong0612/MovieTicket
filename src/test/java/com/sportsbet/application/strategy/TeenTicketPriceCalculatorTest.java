@@ -1,7 +1,6 @@
 package com.sportsbet.application.strategy;
 
 import com.sportsbet.BaseTest;
-import com.sportsbet.application.strategy.price.SeniorTicketPriceCalculator;
 import com.sportsbet.application.strategy.price.TeenTicketPriceCalculator;
 import com.sportsbet.domain.Ticket;
 import com.sportsbet.domain.TicketType;

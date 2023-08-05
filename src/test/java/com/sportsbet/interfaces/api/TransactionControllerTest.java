@@ -46,8 +46,8 @@ public class TransactionControllerTest {
     @BeforeEach
     public void setup() {
         mockMvc = MockMvcBuilders.standaloneSetup(transactionController)
-                .setControllerAdvice(new GlobalExceptionTranslator())
-                .build();
+            .setControllerAdvice(new GlobalExceptionTranslator())
+            .build();
     }
 
     @Test
@@ -56,16 +56,18 @@ public class TransactionControllerTest {
         var transactionId = 1L;
         var customerDTOS = new ArrayList<CustomerDTO>();
         customerDTOS.add(CustomerDTO.builder().name("Billy Kidd").age(1).build());
-        TransactionRequest request = TransactionRequest.builder().transactionId(transactionId).customers(customerDTOS).build();
+        TransactionRequest request = TransactionRequest.builder().transactionId(transactionId).customers(customerDTOS)
+            .build();
 
         //when
         when(converter.convert(any(TransactionRequest.class), Transaction.class)).thenReturn(new Transaction());
         when(transactionService.purchaseTickets(ArgumentMatchers.any())).thenReturn(new Transaction());
-        when(converter.convert(any(Transaction.class), TransactionResponse.class)).thenReturn(new TransactionResponse());
+        when(converter.convert(any(Transaction.class), TransactionResponse.class)).thenReturn(
+            new TransactionResponse());
 
         //should
         mockMvc.perform(
-                post("/v1/transactions").contentType(MediaType.APPLICATION_JSON).content(toJSONString(request))
+            post("/v1/transactions").contentType(MediaType.APPLICATION_JSON).content(toJSONString(request))
         ).andExpect(status().isOk());
     }
 
@@ -75,21 +77,24 @@ public class TransactionControllerTest {
         var transactionId = 1L;
         var customerDTOS = new ArrayList<CustomerDTO>();
         customerDTOS.add(CustomerDTO.builder().name("Billy Kidd").age(-1).build());
-        TransactionRequest request = TransactionRequest.builder().transactionId(transactionId).customers(customerDTOS).build();
+        TransactionRequest request = TransactionRequest.builder().transactionId(transactionId).customers(customerDTOS)
+            .build();
 
         //when
         when(converter.convert(any(TransactionRequest.class), Transaction.class)).thenReturn(new Transaction());
         when(transactionService.purchaseTickets(ArgumentMatchers.any())).thenReturn(new Transaction());
-        when(converter.convert(any(Transaction.class), TransactionResponse.class)).thenReturn(new TransactionResponse());
+        when(converter.convert(any(Transaction.class), TransactionResponse.class)).thenReturn(
+            new TransactionResponse());
 
         //should
         MvcResult mvcResult = mockMvc.perform(
-                post("/v1/transactions").contentType(MediaType.APPLICATION_JSON).content(toJSONString(request))
+            post("/v1/transactions").contentType(MediaType.APPLICATION_JSON).content(toJSONString(request))
         ).andExpect(status().isBadRequest()).andReturn();
-        ErrorResponse actualErrorResponse = jsonToObject(mvcResult.getResponse().getContentAsString(), ErrorResponse.class);
+        ErrorResponse actualErrorResponse = jsonToObject(mvcResult.getResponse().getContentAsString(),
+            ErrorResponse.class);
         ErrorResponse expectedErrorResponse = ErrorResponse.builder()
-                .message(ResultCode.PARAM_VALID_ERROR.getMsg())
-                .build();
+            .message(ResultCode.PARAM_VALID_ERROR.getMsg())
+            .build();
         assertEquals(expectedErrorResponse.getMessage(), actualErrorResponse.getMessage());
     }
 
@@ -99,21 +104,24 @@ public class TransactionControllerTest {
         var transactionId = -11L;
         var customerDTOS = new ArrayList<CustomerDTO>();
         customerDTOS.add(CustomerDTO.builder().name("Billy Kidd").age(1).build());
-        TransactionRequest request = TransactionRequest.builder().transactionId(transactionId).customers(customerDTOS).build();
+        TransactionRequest request = TransactionRequest.builder().transactionId(transactionId).customers(customerDTOS)
+            .build();
 
         //when
         when(converter.convert(any(TransactionRequest.class), Transaction.class)).thenReturn(new Transaction());
         when(transactionService.purchaseTickets(ArgumentMatchers.any())).thenReturn(new Transaction());
-        when(converter.convert(any(Transaction.class), TransactionResponse.class)).thenReturn(new TransactionResponse());
+        when(converter.convert(any(Transaction.class), TransactionResponse.class)).thenReturn(
+            new TransactionResponse());
 
         //should
         MvcResult mvcResult = mockMvc.perform(
-                post("/v1/transactions").contentType(MediaType.APPLICATION_JSON).content(toJSONString(request))
+            post("/v1/transactions").contentType(MediaType.APPLICATION_JSON).content(toJSONString(request))
         ).andExpect(status().isBadRequest()).andReturn();
-        ErrorResponse actualErrorResponse = jsonToObject(mvcResult.getResponse().getContentAsString(), ErrorResponse.class);
+        ErrorResponse actualErrorResponse = jsonToObject(mvcResult.getResponse().getContentAsString(),
+            ErrorResponse.class);
         ErrorResponse expectedErrorResponse = ErrorResponse.builder()
-                .message(ResultCode.PARAM_VALID_ERROR.getMsg())
-                .build();
+            .message(ResultCode.PARAM_VALID_ERROR.getMsg())
+            .build();
         assertEquals(expectedErrorResponse.getMessage(), actualErrorResponse.getMessage());
     }
 
@@ -122,21 +130,24 @@ public class TransactionControllerTest {
         //given
         var transactionId = 1L;
         var customerDTOS = new ArrayList<CustomerDTO>();
-        TransactionRequest request = TransactionRequest.builder().transactionId(transactionId).customers(customerDTOS).build();
+        TransactionRequest request = TransactionRequest.builder().transactionId(transactionId).customers(customerDTOS)
+            .build();
 
         //when
         when(converter.convert(any(TransactionRequest.class), Transaction.class)).thenReturn(new Transaction());
         when(transactionService.purchaseTickets(ArgumentMatchers.any())).thenReturn(new Transaction());
-        when(converter.convert(any(Transaction.class), TransactionResponse.class)).thenReturn(new TransactionResponse());
+        when(converter.convert(any(Transaction.class), TransactionResponse.class)).thenReturn(
+            new TransactionResponse());
 
         //should
         MvcResult mvcResult = mockMvc.perform(
-                post("/v1/transactions").contentType(MediaType.APPLICATION_JSON).content(toJSONString(request))
+            post("/v1/transactions").contentType(MediaType.APPLICATION_JSON).content(toJSONString(request))
         ).andExpect(status().isBadRequest()).andReturn();
-        ErrorResponse actualErrorResponse = jsonToObject(mvcResult.getResponse().getContentAsString(), ErrorResponse.class);
+        ErrorResponse actualErrorResponse = jsonToObject(mvcResult.getResponse().getContentAsString(),
+            ErrorResponse.class);
         ErrorResponse expectedErrorResponse = ErrorResponse.builder()
-                .message(ResultCode.PARAM_VALID_ERROR.getMsg())
-                .build();
+            .message(ResultCode.PARAM_VALID_ERROR.getMsg())
+            .build();
         assertEquals(expectedErrorResponse.getMessage(), actualErrorResponse.getMessage());
     }
 
@@ -149,16 +160,18 @@ public class TransactionControllerTest {
         //when
         when(converter.convert(any(TransactionRequest.class), Transaction.class)).thenReturn(new Transaction());
         when(transactionService.purchaseTickets(ArgumentMatchers.any())).thenReturn(new Transaction());
-        when(converter.convert(any(Transaction.class), TransactionResponse.class)).thenReturn(new TransactionResponse());
+        when(converter.convert(any(Transaction.class), TransactionResponse.class)).thenReturn(
+            new TransactionResponse());
 
         //should
         MvcResult mvcResult = mockMvc.perform(
-                post("/v1/transactions").contentType(MediaType.APPLICATION_JSON).content(toJSONString(request))
+            post("/v1/transactions").contentType(MediaType.APPLICATION_JSON).content(toJSONString(request))
         ).andExpect(status().isBadRequest()).andReturn();
-        ErrorResponse actualErrorResponse = jsonToObject(mvcResult.getResponse().getContentAsString(), ErrorResponse.class);
+        ErrorResponse actualErrorResponse = jsonToObject(mvcResult.getResponse().getContentAsString(),
+            ErrorResponse.class);
         ErrorResponse expectedErrorResponse = ErrorResponse.builder()
-                .message(ResultCode.PARAM_VALID_ERROR.getMsg())
-                .build();
+            .message(ResultCode.PARAM_VALID_ERROR.getMsg())
+            .build();
         assertEquals(expectedErrorResponse.getMessage(), actualErrorResponse.getMessage());
     }
 
@@ -172,16 +185,18 @@ public class TransactionControllerTest {
         //when
         when(converter.convert(any(TransactionRequest.class), Transaction.class)).thenReturn(new Transaction());
         when(transactionService.purchaseTickets(ArgumentMatchers.any())).thenReturn(new Transaction());
-        when(converter.convert(any(Transaction.class), TransactionResponse.class)).thenReturn(new TransactionResponse());
+        when(converter.convert(any(Transaction.class), TransactionResponse.class)).thenReturn(
+            new TransactionResponse());
 
         //should
         MvcResult mvcResult = mockMvc.perform(
-                post("/v1/transactions").contentType(MediaType.APPLICATION_JSON).content(toJSONString(request))
+            post("/v1/transactions").contentType(MediaType.APPLICATION_JSON).content(toJSONString(request))
         ).andExpect(status().isBadRequest()).andReturn();
-        ErrorResponse actualErrorResponse = jsonToObject(mvcResult.getResponse().getContentAsString(), ErrorResponse.class);
+        ErrorResponse actualErrorResponse = jsonToObject(mvcResult.getResponse().getContentAsString(),
+            ErrorResponse.class);
         ErrorResponse expectedErrorResponse = ErrorResponse.builder()
-                .message(ResultCode.PARAM_VALID_ERROR.getMsg())
-                .build();
+            .message(ResultCode.PARAM_VALID_ERROR.getMsg())
+            .build();
         assertEquals(expectedErrorResponse.getMessage(), actualErrorResponse.getMessage());
     }
 
@@ -191,21 +206,24 @@ public class TransactionControllerTest {
         var transactionId = 1L;
         var customerDTOS = new ArrayList<CustomerDTO>();
         customerDTOS.add(CustomerDTO.builder().name("Billy Kidd").build());
-        TransactionRequest request = TransactionRequest.builder().transactionId(transactionId).customers(customerDTOS).build();
+        TransactionRequest request = TransactionRequest.builder().transactionId(transactionId).customers(customerDTOS)
+            .build();
 
         //when
         when(converter.convert(any(TransactionRequest.class), Transaction.class)).thenReturn(new Transaction());
         when(transactionService.purchaseTickets(ArgumentMatchers.any())).thenReturn(new Transaction());
-        when(converter.convert(any(Transaction.class), TransactionResponse.class)).thenReturn(new TransactionResponse());
+        when(converter.convert(any(Transaction.class), TransactionResponse.class)).thenReturn(
+            new TransactionResponse());
 
         //should
         MvcResult mvcResult = mockMvc.perform(
-                post("/v1/transactions").contentType(MediaType.APPLICATION_JSON).content(toJSONString(request))
+            post("/v1/transactions").contentType(MediaType.APPLICATION_JSON).content(toJSONString(request))
         ).andExpect(status().isBadRequest()).andReturn();
-        ErrorResponse actualErrorResponse = jsonToObject(mvcResult.getResponse().getContentAsString(), ErrorResponse.class);
+        ErrorResponse actualErrorResponse = jsonToObject(mvcResult.getResponse().getContentAsString(),
+            ErrorResponse.class);
         ErrorResponse expectedErrorResponse = ErrorResponse.builder()
-                .message(ResultCode.PARAM_VALID_ERROR.getMsg())
-                .build();
+            .message(ResultCode.PARAM_VALID_ERROR.getMsg())
+            .build();
         assertEquals(expectedErrorResponse.getMessage(), actualErrorResponse.getMessage());
     }
 

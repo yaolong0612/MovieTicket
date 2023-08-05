@@ -29,7 +29,8 @@ public class GlobalExceptionTranslator {
         log.warn("Method Argument Type Mismatch", e);
         var details = Arrays.asList(String.format("Method Argument Type Mismatch: %s", e.getName()));
 
-        var errorResponse = ErrorResponse.builder().message(ResultCode.PARAM_TYPE_ERROR.getMsg()).details(details).build();
+        var errorResponse = ErrorResponse.builder().message(ResultCode.PARAM_TYPE_ERROR.getMsg()).details(details)
+            .build();
         return ResponseEntity.badRequest().body(errorResponse);
     }
 
@@ -43,10 +44,11 @@ public class GlobalExceptionTranslator {
     public ResponseEntity<ErrorResponse> handleValidationException(MethodArgumentNotValidException ex) {
         log.warn("Method Argument Not Valid", ex);
         var details = ex.getBindingResult().getFieldErrors().stream()
-                .map(error -> error.getField() + ": " + error.getDefaultMessage())
-                .collect(Collectors.toList());
+            .map(error -> error.getField() + ": " + error.getDefaultMessage())
+            .collect(Collectors.toList());
 
-        var errorResponse = ErrorResponse.builder().message(ResultCode.PARAM_VALID_ERROR.getMsg()).details(details).build();
+        var errorResponse = ErrorResponse.builder().message(ResultCode.PARAM_VALID_ERROR.getMsg()).details(details)
+            .build();
         return ResponseEntity.badRequest().body(errorResponse);
     }
 
@@ -60,7 +62,8 @@ public class GlobalExceptionTranslator {
     public ResponseEntity<ErrorResponse> handleError(HttpMessageNotReadableException ex) {
         log.error("Message Not Readable", ex);
         var details = Arrays.asList(ex.getMessage());
-        var errorResponse = ErrorResponse.builder().message(ResultCode.MSG_NOT_READABLE.getMsg()).details(details).build();
+        var errorResponse = ErrorResponse.builder().message(ResultCode.MSG_NOT_READABLE.getMsg()).details(details)
+            .build();
         return ResponseEntity.badRequest().body(errorResponse);
     }
 
@@ -74,7 +77,8 @@ public class GlobalExceptionTranslator {
     public ResponseEntity<ErrorResponse> handleError(Throwable ex) {
         log.error("Internal Server Error", ex);
         var details = Arrays.asList(ex.getMessage());
-        var errorResponse = ErrorResponse.builder().message(ResultCode.INTERNAL_SERVER_ERROR.getMsg()).details(details).build();
+        var errorResponse = ErrorResponse.builder().message(ResultCode.INTERNAL_SERVER_ERROR.getMsg()).details(details)
+            .build();
         return ResponseEntity.internalServerError().body(errorResponse);
     }
 

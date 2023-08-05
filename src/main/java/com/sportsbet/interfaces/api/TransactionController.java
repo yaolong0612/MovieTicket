@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(
-        name = "Transaction Controller",
-        description = "Transaction Operations"
+    name = "Transaction Controller",
+    description = "Transaction Operations"
 )
 @RestController
 @RequestMapping("/v1/transactions")
@@ -34,15 +34,15 @@ public class TransactionController {
 
     @Operation(summary = "Get transaction with tickets and total cost by transaction details")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Operation is Successful",
-                    content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = TransactionResponse.class))),
-            @ApiResponse(responseCode = "400", description = "Parameter Validation Error | Message Can't be Read | Parameter Type Mismatch",
-                    content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorResponse.class))),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error",
-                    content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorResponse.class))),
+        @ApiResponse(responseCode = "200", description = "Operation is Successful",
+            content = @Content(mediaType = "application/json",
+                schema = @Schema(implementation = TransactionResponse.class))),
+        @ApiResponse(responseCode = "400", description = "Parameter Validation Error | Message Can't be Read | Parameter Type Mismatch",
+            content = @Content(mediaType = "application/json",
+                schema = @Schema(implementation = ErrorResponse.class))),
+        @ApiResponse(responseCode = "500", description = "Internal Server Error",
+            content = @Content(mediaType = "application/json",
+                schema = @Schema(implementation = ErrorResponse.class))),
     })
     @PostMapping
     public ResponseEntity<TransactionResponse> getTickets(@Valid @RequestBody TransactionRequest transactionRequest) {

@@ -33,7 +33,8 @@ public class TransactionServiceTest {
         var tickets = new ArrayList<Ticket>();
         tickets.add(Ticket.builder().ticketType(TicketType.SENIOR).quantity(1).totalCost(17.50).build());
         var transactionTotalCost = 17.50;
-        var expectedTransaction = Transaction.builder().transactionId(transactionId).customers(customerList).tickets(tickets).totalCost(transactionTotalCost).build();
+        var expectedTransaction = Transaction.builder().transactionId(transactionId).customers(customerList)
+            .tickets(tickets).totalCost(transactionTotalCost).build();
 
         assertEquals(expectedTransaction, actualTransaction);
     }
@@ -53,7 +54,8 @@ public class TransactionServiceTest {
         var tickets = new ArrayList<Ticket>();
         tickets.add(Ticket.builder().ticketType(TicketType.ADULT).quantity(1).totalCost(25.00).build());
         var transactionTotalCost = 25.00;
-        var expectedTransaction = Transaction.builder().transactionId(transactionId).customers(customerList).tickets(tickets).totalCost(transactionTotalCost).build();
+        var expectedTransaction = Transaction.builder().transactionId(transactionId).customers(customerList)
+            .tickets(tickets).totalCost(transactionTotalCost).build();
 
         assertEquals(expectedTransaction, actualTransaction);
     }
@@ -73,7 +75,8 @@ public class TransactionServiceTest {
         var tickets = new ArrayList<Ticket>();
         tickets.add(Ticket.builder().ticketType(TicketType.CHILDREN).quantity(1).totalCost(5.00).build());
         var transactionTotalCost = 5.00;
-        var expectedTransaction = Transaction.builder().transactionId(transactionId).customers(customerList).tickets(tickets).totalCost(transactionTotalCost).build();
+        var expectedTransaction = Transaction.builder().transactionId(transactionId).customers(customerList)
+            .tickets(tickets).totalCost(transactionTotalCost).build();
 
         assertEquals(expectedTransaction, actualTransaction);
     }
@@ -96,7 +99,8 @@ public class TransactionServiceTest {
         tickets.add(Ticket.builder().ticketType(TicketType.CHILDREN).quantity(2).totalCost(10.00).build());
         tickets.add(Ticket.builder().ticketType(TicketType.SENIOR).quantity(1).totalCost(17.50).build());
         var transactionTotalCost = 27.50;
-        var expectedTransaction = Transaction.builder().transactionId(transactionId).customers(customerList).tickets(tickets).totalCost(transactionTotalCost).build();
+        var expectedTransaction = Transaction.builder().transactionId(transactionId).customers(customerList)
+            .tickets(tickets).totalCost(transactionTotalCost).build();
 
         assertEquals(expectedTransaction, actualTransaction);
     }
@@ -122,7 +126,8 @@ public class TransactionServiceTest {
         tickets.add(Ticket.builder().ticketType(TicketType.CHILDREN).quantity(3).totalCost(11.25).build());
         tickets.add(Ticket.builder().ticketType(TicketType.TEEN).quantity(1).totalCost(12).build());
         var transactionTotalCost = 48.25;
-        var expectedTransaction = Transaction.builder().transactionId(transactionId).customers(customerList).tickets(tickets).totalCost(transactionTotalCost).build();
+        var expectedTransaction = Transaction.builder().transactionId(transactionId).customers(customerList)
+            .tickets(tickets).totalCost(transactionTotalCost).build();
 
         assertEquals(expectedTransaction, actualTransaction);
     }
@@ -148,7 +153,8 @@ public class TransactionServiceTest {
         tickets.add(Ticket.builder().ticketType(TicketType.SENIOR).quantity(1).totalCost(17.50).build());
         tickets.add(Ticket.builder().ticketType(TicketType.TEEN).quantity(1).totalCost(12.00).build());
         var transactionTotalCost = 59.50;
-        var expectedTransaction = Transaction.builder().transactionId(transactionId).customers(customerList).tickets(tickets).totalCost(transactionTotalCost).build();
+        var expectedTransaction = Transaction.builder().transactionId(transactionId).customers(customerList)
+            .tickets(tickets).totalCost(transactionTotalCost).build();
 
         assertEquals(expectedTransaction, actualTransaction);
     }

@@ -7,6 +7,7 @@ import lombok.Getter;
  * Custom exception class for service-level exceptions.
  */
 public class ServiceException extends RuntimeException {
+
     private static final long serialVersionUID = 2359767895161832954L;
 
     /**

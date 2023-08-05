@@ -1,14 +1,11 @@
 package com.sportsbet.application;
 
 import com.sportsbet.domain.Ticket;
-import com.sportsbet.domain.TicketType;
 import com.sportsbet.domain.Transaction;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.stream.Collectors;
 
 /**

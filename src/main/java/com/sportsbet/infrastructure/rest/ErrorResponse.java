@@ -17,6 +17,7 @@ import java.util.List;
 @Builder
 @Schema(description = "Error Response details")
 public class ErrorResponse {
+
     /**
      * The main error message describing the error.
      */
