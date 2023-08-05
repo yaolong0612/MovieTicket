@@ -1,5 +1,7 @@
 package com.sportsbet.application;
 
+import com.sportsbet.application.strategy.price.TicketPriceCalculator;
+import com.sportsbet.application.strategy.price.TicketPriceCalculatorFactory;
 import com.sportsbet.domain.Customer;
 import com.sportsbet.domain.Ticket;
 import com.sportsbet.domain.TicketType;
@@ -12,6 +14,8 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class TicketService {
+
+    private final TicketPriceCalculatorFactory ticketPriceCalculatorFactory;
 
     /**
      * Determines the ticket type based on the customer information.
@@ -38,26 +42,15 @@ public class TicketService {
      * @return The total cost of the tickets of the given type and quantity.
      */
     public double calculateTicketTotalCost(Ticket ticket) {
-        var costPerTicket = 0.0;
-        switch (ticket.getTicketType()) {
-            case ADULT:
-                costPerTicket = 25.00;
-                break;
-            case SENIOR:
-                costPerTicket = 25.00 * 0.70; // 30% cheaper
-                break;
-            case TEEN:
-                costPerTicket = 12.00;
-                break;
-            case CHILDREN:
-                costPerTicket = 5.00;
-                if (ticket.getQuantity() >= 3) {
-                    costPerTicket *= 0.75; // 25% discount
-                }
-                break;
-            default:
-                costPerTicket = 0.0;
+        TicketPriceCalculator ticketPriceCalculator = ticketPriceCalculatorFactory.getCalculator(ticket.getTicketType());
+        var totalCost = ticketPriceCalculator.calculatePrice(ticket).getTotalCost();
+        if (ticket.getTicketType() == TicketType.SENIOR) {
+            totalCost = totalCost * 0.7;
+            return totalCost;
         }
-        return ticket.getQuantity() * costPerTicket;
+        if (ticket.getTicketType() == TicketType.CHILDREN && ticket.getQuantity() >= 3) {
+            totalCost = totalCost * 0.75;
+        }
+        return totalCost;
     }
 }

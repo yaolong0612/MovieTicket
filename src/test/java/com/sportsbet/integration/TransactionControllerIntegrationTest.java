@@ -187,6 +187,25 @@ public class TransactionControllerIntegrationTest {
                         ).totalCost(48.25).build()
                 ),
                 Arguments.of(
+                        TransactionRequest.builder().transactionId(2L).customers(
+                                List.of(
+                                        CustomerDTO.builder().name("Billy Kidd").age(36).build(),
+                                        CustomerDTO.builder().name("Zoe Daniels").age(3).build(),
+                                        CustomerDTO.builder().name("George White").age(8).build(),
+                                        CustomerDTO.builder().name("Tommy Anderson").age(9).build(),
+                                        CustomerDTO.builder().name("James Anderson").age(9).build(),
+                                        CustomerDTO.builder().name("Joe Smith").age(17).build()
+                                )
+                        ).build(),
+                        TransactionResponse.builder().transactionId(2L).tickets(
+                                List.of(
+                                        TicketDTO.builder().ticketType(TicketType.ADULT).quantity(1).totalCost(25.00).build(),
+                                        TicketDTO.builder().ticketType(TicketType.CHILDREN).quantity(4).totalCost(15).build(),
+                                        TicketDTO.builder().ticketType(TicketType.TEEN).quantity(1).totalCost(12).build()
+                                )
+                        ).totalCost(52).build()
+                ),
+                Arguments.of(
                         TransactionRequest.builder().transactionId(3L).customers(
                                 List.of(
                                         CustomerDTO.builder().name("Jesse James").age(36).build(),
