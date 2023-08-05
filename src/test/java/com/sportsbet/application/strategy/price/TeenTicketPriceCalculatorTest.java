@@ -1,7 +1,7 @@
-package com.sportsbet.application.strategy;
+package com.sportsbet.application.strategy.price;
 
 import com.sportsbet.BaseTest;
-import com.sportsbet.application.strategy.price.AdultTicketPriceCalculator;
+import com.sportsbet.application.strategy.price.TeenTicketPriceCalculator;
 import com.sportsbet.domain.Ticket;
 import com.sportsbet.domain.TicketType;
 import com.sportsbet.infrastructure.error.ServiceException;
@@ -11,22 +11,22 @@ import org.mockito.InjectMocks;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class AdultTicketPriceCalculatorTest extends BaseTest {
+public class TeenTicketPriceCalculatorTest extends BaseTest {
 
     @InjectMocks
-    private AdultTicketPriceCalculator ticketPriceCalculator;
+    private TeenTicketPriceCalculator ticketPriceCalculator;
 
     @Test
     void shouldGetAdultTicket() {
         //given
         var quantity = generateRandomInt(1, Integer.MAX_VALUE);
-        var ticket = Ticket.builder().ticketType(TicketType.ADULT).quantity(quantity).build();
+        var ticket = Ticket.builder().ticketType(TicketType.TEEN).quantity(quantity).build();
 
         //when
         double actualTotalCost = ticketPriceCalculator.calculatePrice(ticket).getTotalCost();
 
         //should
-        double expectedActualTotalCost = 25.00 * quantity;
+        double expectedActualTotalCost = 12.00 * quantity;
 
         assertEquals(expectedActualTotalCost, actualTotalCost);
     }
@@ -37,7 +37,7 @@ public class AdultTicketPriceCalculatorTest extends BaseTest {
         var quantity = generateRandomInt(1, Integer.MAX_VALUE);
         var ticket = Ticket.builder().ticketType(TicketType.CHILDREN).quantity(quantity).build();
 
-        assertThrows(ServiceException.class, ()-> ticketPriceCalculator.calculatePrice(ticket));
+        assertThrows(ServiceException.class, () -> ticketPriceCalculator.calculatePrice(ticket));
     }
-
 }
+

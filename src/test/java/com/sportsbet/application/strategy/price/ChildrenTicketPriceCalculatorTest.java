@@ -1,7 +1,7 @@
-package com.sportsbet.application.strategy;
+package com.sportsbet.application.strategy.price;
 
 import com.sportsbet.BaseTest;
-import com.sportsbet.application.strategy.price.SeniorTicketPriceCalculator;
+import com.sportsbet.application.strategy.price.ChildrenTicketPriceCalculator;
 import com.sportsbet.domain.Ticket;
 import com.sportsbet.domain.TicketType;
 import com.sportsbet.infrastructure.error.ServiceException;
@@ -11,22 +11,22 @@ import org.mockito.InjectMocks;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class SeniorTicketPriceCalculatorTest extends BaseTest {
+public class ChildrenTicketPriceCalculatorTest extends BaseTest {
 
     @InjectMocks
-    private SeniorTicketPriceCalculator ticketPriceCalculator;
+    private ChildrenTicketPriceCalculator ticketPriceCalculator;
 
     @Test
     void shouldGetAdultTicket() {
         //given
         var quantity = generateRandomInt(1, Integer.MAX_VALUE);
-        var ticket = Ticket.builder().ticketType(TicketType.SENIOR).quantity(quantity).build();
+        var ticket = Ticket.builder().ticketType(TicketType.CHILDREN).quantity(quantity).build();
 
         //when
         double actualTotalCost = ticketPriceCalculator.calculatePrice(ticket).getTotalCost();
 
         //should
-        double expectedActualTotalCost = 25.00 * quantity;
+        double expectedActualTotalCost = 5.00 * quantity;
 
         assertEquals(expectedActualTotalCost, actualTotalCost);
     }
@@ -35,7 +35,7 @@ public class SeniorTicketPriceCalculatorTest extends BaseTest {
     void shouldGetServiceException() {
         //given
         var quantity = generateRandomInt(1, Integer.MAX_VALUE);
-        var ticket = Ticket.builder().ticketType(TicketType.CHILDREN).quantity(quantity).build();
+        var ticket = Ticket.builder().ticketType(TicketType.ADULT).quantity(quantity).build();
 
         assertThrows(ServiceException.class, () -> ticketPriceCalculator.calculatePrice(ticket));
     }

@@ -1,4 +1,4 @@
-package com.sportsbet.application.strategy;
+package com.sportsbet.application.strategy.price;
 
 import com.sportsbet.BaseTest;
 import com.sportsbet.application.strategy.price.AdultTicketPriceCalculator;
