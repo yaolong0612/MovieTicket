@@ -1,5 +1,7 @@
 package com.sportsbet.application;
 
+import com.sportsbet.application.strategy.discount.TicketDiscountCalculator;
+import com.sportsbet.application.strategy.discount.TicketDiscountCalculatorFactory;
 import com.sportsbet.application.strategy.price.TicketPriceCalculator;
 import com.sportsbet.application.strategy.price.TicketPriceCalculatorFactory;
 import com.sportsbet.domain.Customer;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 public class TicketService {
 
     private final TicketPriceCalculatorFactory ticketPriceCalculatorFactory;
+    private final TicketDiscountCalculatorFactory ticketDiscountCalculatorFactory;
 
     /**
      * Determines the ticket type based on the customer information.
@@ -43,14 +46,11 @@ public class TicketService {
      */
     public double calculateTicketTotalCost(Ticket ticket) {
         TicketPriceCalculator ticketPriceCalculator = ticketPriceCalculatorFactory.getPriceCalculator(ticket);
+        TicketDiscountCalculator ticketDiscountCalculator = ticketDiscountCalculatorFactory.getPriceCalculator(ticket);
+
         var totalCost = ticketPriceCalculator.calculatePrice(ticket).getTotalCost();
-        if (ticket.getTicketType() == TicketType.SENIOR) {
-            totalCost = totalCost * 0.7;
-            return totalCost;
-        }
-        if (ticket.getTicketType() == TicketType.CHILDREN && ticket.getQuantity() >= 3) {
-            totalCost = totalCost * 0.75;
-        }
-        return totalCost;
+        var discountRate = ticketDiscountCalculator.calculateDiscountRate(ticket);
+
+        return totalCost * discountRate;
     }
 }

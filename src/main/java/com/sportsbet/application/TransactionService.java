@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.stream.Collectors;
 
 /**
  * Application service for handling transaction operations.
@@ -30,13 +31,10 @@ public class TransactionService {
      * @return A new Transaction object with the purchased movie tickets and the total cost.
      */
     public Transaction purchaseTickets(Transaction transaction) {
-        var ticketTypeCounts = new HashMap<TicketType, Integer>();
-
-        for (var customer : transaction.getCustomers()) {
-            var ticketType = ticketService.determineTicketTypeByConsumerDetails(customer);
-            int ticketCount = ticketTypeCounts.getOrDefault(ticketType, 0) + 1;
-            ticketTypeCounts.put(ticketType, ticketCount);
-        }
+        // Key is ticket type, value is quantity is this type of ticket in this transaction
+        var ticketTypeCounts = transaction.getCustomers().stream()
+                .collect(Collectors.groupingBy(customer -> ticketService.determineTicketTypeByConsumerDetails(customer),
+                        Collectors.summingInt(customer -> 1)));
 
         var tickets = new ArrayList<Ticket>();
         var transactionTotalCost = 0.0;
