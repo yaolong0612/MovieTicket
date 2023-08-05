@@ -1,5 +1,6 @@
 package com.sportsbet.application;
 
+import com.sportsbet.domain.Customer;
 import com.sportsbet.domain.Ticket;
 import com.sportsbet.domain.TicketType;
 import lombok.RequiredArgsConstructor;
@@ -13,17 +14,17 @@ import org.springframework.stereotype.Service;
 public class TicketService {
 
     /**
-     * Determines the ticket type based on the given age.
+     * Determines the ticket type based on the customer information.
      *
-     * @param age The age of the customer.
-     * @return The ticket type corresponding to the given age.
+     * @param customer Customer information.
+     * @return The ticket type corresponding to the customer information.
      */
-    public TicketType determineTicketTypeByAge(int age) {
-        if (age < 11) {
+    public TicketType determineTicketTypeByConsumerDetails(Customer customer) {
+        if (customer.getAge() < 11) {
             return TicketType.CHILDREN;
-        } else if (age < 18) {
+        } else if (customer.getAge() < 18) {
             return TicketType.TEEN;
-        } else if (age < 65) {
+        } else if (customer.getAge() < 65) {
             return TicketType.ADULT;
         } else {
             return TicketType.SENIOR;

@@ -33,7 +33,7 @@ public class TransactionService {
         var ticketTypeCounts = new HashMap<TicketType, Integer>();
 
         for (var customer : transaction.getCustomers()) {
-            var ticketType = ticketService.determineTicketTypeByAge(customer.getAge());
+            var ticketType = ticketService.determineTicketTypeByConsumerDetails(customer);
             int ticketCount = ticketTypeCounts.getOrDefault(ticketType, 0) + 1;
             ticketTypeCounts.put(ticketType, ticketCount);
         }

@@ -13,12 +13,12 @@ public class BaseTest {
     }
 
     // >=min and <max
-    protected int generateRandomInt(int min, int max) {
+    protected static int generateRandomInt(int min, int max) {
         Random random = new Random();
         return random.nextInt(max - min) + min;
     }
 
-    protected String randomString() {
+    protected static String randomString() {
         return UUID.randomUUID().toString();
     }
 

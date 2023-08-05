@@ -1,10 +1,16 @@
 package com.sportsbet.application;
 
 import com.sportsbet.BaseTest;
+import com.sportsbet.domain.Customer;
 import com.sportsbet.domain.Ticket;
 import com.sportsbet.domain.TicketType;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
+
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -13,124 +19,59 @@ public class TicketServiceTest extends BaseTest {
     @InjectMocks
     private TicketService ticketService;
 
-    @Test
-    void testDetermineAdultTicketTypeForAge18() {
-        //given
-        var age = 18;
-
+    @ParameterizedTest
+    @MethodSource("determineTicketTypeByConsumerDetailsParams")
+    public void testDetermineTicketTypeByConsumerDetails(Customer customer, TicketType expectedTickType) {
         //when
-        var actualTicketType = ticketService.determineTicketTypeByAge(age);
+        var actualTicketType = ticketService.determineTicketTypeByConsumerDetails(customer);
 
         //should
-        assertEquals(TicketType.ADULT, actualTicketType);
+        assertEquals(expectedTickType, actualTicketType);
     }
 
-    @Test
-    void testDetermineAdultTicketTypeForAgeGreaterThen18ButLessThan65() {
-        //given
-        var age = generateRandomInt(18, 65);
-
-        //when
-        var actualTicketType = ticketService.determineTicketTypeByAge(age);
-
-        //should
-        assertEquals(TicketType.ADULT, actualTicketType);
-    }
-
-    @Test
-    void testDetermineAdultTicketTypeForAge64() {
-        //given
-        var age = 64;
-
-        //when
-        var actualTicketType = ticketService.determineTicketTypeByAge(age);
-
-        //should
-        assertEquals(TicketType.ADULT, actualTicketType);
-    }
-
-    @Test
-    void testDetermineAdultTicketTypeForAge65() {
-        //given
-        var age = 65;
-
-        //when
-        var actualTicketType = ticketService.determineTicketTypeByAge(age);
-
-        //should
-        assertEquals(TicketType.SENIOR, actualTicketType);
-    }
-
-    @Test
-    void testDetermineAdultTicketTypeForAgeGreaterThan65() {
-        //given
-        var age = generateRandomInt(66, 110);
-
-        //when
-        var actualTicketType = ticketService.determineTicketTypeByAge(age);
-
-        //should
-        assertEquals(TicketType.SENIOR, actualTicketType);
-    }
-
-    @Test
-    void testDetermineAdultTicketTypeForAge11() {
-        //given
-        var age = 11;
-
-        //when
-        var actualTicketType = ticketService.determineTicketTypeByAge(age);
-
-        //should
-        assertEquals(TicketType.TEEN, actualTicketType);
-    }
-
-    @Test
-    void testDetermineAdultTicketTypeForAge17() {
-        //given
-        var age = 17;
-
-        //when
-        var actualTicketType = ticketService.determineTicketTypeByAge(age);
-
-        //should
-        assertEquals(TicketType.TEEN, actualTicketType);
-    }
-
-    @Test
-    void testDetermineAdultTicketTypeForAgeGreaterThan11ButLessThan18() {
-        //given
-        var age = generateRandomInt(12, 18);
-
-        //when
-        var actualTicketType = ticketService.determineTicketTypeByAge(age);
-
-        //should
-        assertEquals(TicketType.TEEN, actualTicketType);
-    }
-
-    @Test
-    void testDetermineAdultTicketTypeForAge10() {
-        //given
-        var age = 10;
-
-        //when
-        var actualTicketType = ticketService.determineTicketTypeByAge(age);
-
-        //should
-        assertEquals(TicketType.CHILDREN, actualTicketType);
-    }
-
-    @Test
-    void testDetermineAdultTicketTypeForAgeLessThan10() {
-        //given
-        var age = generateRandomInt(0, 10);
-
-        //when
-        var actualTicketType = ticketService.determineTicketTypeByAge(age);
-
-        //should
-        assertEquals(TicketType.CHILDREN, actualTicketType);
+    private static Stream<Arguments> determineTicketTypeByConsumerDetailsParams() {
+        return Stream.of(
+                Arguments.of(
+                        Customer.builder().name(randomString()).age(18).build(),
+                        TicketType.ADULT
+                ),
+                Arguments.of(
+                        Customer.builder().name(randomString()).age(generateRandomInt(18, 65)).build(),
+                        TicketType.ADULT
+                ),
+                Arguments.of(
+                        Customer.builder().name(randomString()).age(64).build(),
+                        TicketType.ADULT
+                ),
+                Arguments.of(
+                        Customer.builder().name(randomString()).age(65).build(),
+                        TicketType.SENIOR
+                ),
+                Arguments.of(
+                        Customer.builder().name(randomString()).age(generateRandomInt(66, 110)).build(),
+                        TicketType.SENIOR
+                ),
+                Arguments.of(
+                        Customer.builder().name(randomString()).age(11).build(),
+                        TicketType.TEEN
+                ),
+                Arguments.of(
+                        Customer.builder().name(randomString()).age(17).build(),
+                        TicketType.TEEN
+                ),
+                Arguments.of(
+                        Customer.builder().name(randomString()).age(generateRandomInt(12, 18)).build(),
+                        TicketType.TEEN
+                ),
+                Arguments.of(
+                        Customer.builder().name(randomString()).age(10).build(),
+                        TicketType.CHILDREN
+                ),
+                Arguments.of(
+                        Customer.builder().name(randomString()).age(generateRandomInt(0, 10)).build(),
+                        TicketType.CHILDREN
+                )
+        );
     }
 
     @Test
