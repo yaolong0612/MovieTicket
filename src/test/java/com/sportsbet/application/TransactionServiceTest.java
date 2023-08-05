@@ -1,24 +1,21 @@
 package com.sportsbet.application;
 
-import com.sportsbet.BaseTest;
 import com.sportsbet.domain.Customer;
 import com.sportsbet.domain.Ticket;
 import com.sportsbet.domain.TicketType;
 import com.sportsbet.domain.Transaction;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Spy;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class TransactionServiceTest extends BaseTest {
+@SpringBootTest
+public class TransactionServiceTest {
 
-    @Spy
-    private TicketService ticketService;
-
-    @InjectMocks
+    @Autowired
     private TransactionService transactionService;
 
     @Test
