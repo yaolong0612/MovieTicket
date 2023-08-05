@@ -17,7 +17,7 @@ public interface TicketPriceCalculator {
     TicketType getTicketType();
 
     /**
-     * Calculates the fare amount for a trip based on the provided tap-on and tap-off stops.
+     * Calculates the ticket total cost based on ticket information
      *
      * @param ticket The information of the ticket
      * @return Ticket with total cost.

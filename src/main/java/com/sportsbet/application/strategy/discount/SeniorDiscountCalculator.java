@@ -1,0 +1,19 @@
+package com.sportsbet.application.strategy.discount;
+
+import com.sportsbet.domain.Ticket;
+import org.springframework.stereotype.Component;
+
+/**
+ * Implementation of the TicketDiscountCalculator interface for calculating discount rate for senior tickets.
+ */
+@Component
+public class SeniorDiscountCalculator implements TicketDiscountCalculator {
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public double calculateDiscountRate(Ticket ticket) {
+        return 0.70;
+    }
+}
