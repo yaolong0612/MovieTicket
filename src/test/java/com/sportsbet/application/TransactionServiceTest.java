@@ -1,162 +1,63 @@
 package com.sportsbet.application;
 
+import com.sportsbet.BaseTest;
 import com.sportsbet.domain.Customer;
 import com.sportsbet.domain.Ticket;
 import com.sportsbet.domain.TicketType;
 import com.sportsbet.domain.Transaction;
+import java.util.List;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.ArrayList;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
 
-@SpringBootTest
-public class TransactionServiceTest {
+public class TransactionServiceTest extends BaseTest {
 
-    @Autowired
+    @InjectMocks
     private TransactionService transactionService;
+    @Mock
+    private TicketService ticketService;
 
     @Test
-    void shouldGet1SeniorTickets() {
+    void testPurchaseTickets() {
         //given
-        var transactionId = 1L;
-        var customerList = new ArrayList<Customer>();
-        customerList.add(Customer.builder().name("Billy Kidd").age(70).build());
-        var transaction = Transaction.builder().transactionId(transactionId).customers(customerList).build();
+        var transactionID = 1L;
+        var childrenCustomer1 = Customer.builder().name(randomString()).age(generateRandomInt(0, 10)).build();
+        var childrenCustomer2 = Customer.builder().name(randomString()).age(generateRandomInt(0, 10)).build();
+        var teenCustomer = Customer.builder().name(randomString()).age(generateRandomInt(11, 17)).build();
+        var adultCustomer = Customer.builder().name(randomString()).age(generateRandomInt(18, 65)).build();
+        var seniorCustomer = Customer.builder().name(randomString()).age(generateRandomInt(66, 120)).build();
+        var customers = List.of(childrenCustomer1, childrenCustomer2, teenCustomer, adultCustomer, seniorCustomer);
+        var transaction = Transaction.builder().transactionId(transactionID).customers(customers).build();
 
         //when
-        var actualTransaction = transactionService.purchaseTickets(transaction);
+        when(ticketService.determineTicketTypeByConsumerDetails(childrenCustomer1)).thenReturn(TicketType.CHILDREN);
+        when(ticketService.determineTicketTypeByConsumerDetails(childrenCustomer2)).thenReturn(TicketType.CHILDREN);
+        when(ticketService.determineTicketTypeByConsumerDetails(teenCustomer)).thenReturn(TicketType.TEEN);
+        when(ticketService.determineTicketTypeByConsumerDetails(adultCustomer)).thenReturn(TicketType.ADULT);
+        when(ticketService.determineTicketTypeByConsumerDetails(seniorCustomer)).thenReturn(TicketType.SENIOR);
+        when(ticketService.createTicket(TicketType.ADULT, 1)).thenReturn(
+            Ticket.builder().quantity(1).ticketType(TicketType.ADULT).totalCost(25.00).build());
+        when(ticketService.createTicket(TicketType.TEEN, 1)).thenReturn(
+            Ticket.builder().quantity(1).ticketType(TicketType.TEEN).totalCost(12.00).build());
+        when(ticketService.createTicket(TicketType.SENIOR, 1)).thenReturn(
+            Ticket.builder().quantity(1).ticketType(TicketType.SENIOR).totalCost(17.50).build());
+        when(ticketService.createTicket(TicketType.CHILDREN, 2)).thenReturn(
+            Ticket.builder().quantity(2).ticketType(TicketType.CHILDREN).totalCost(10.00).build());
 
         //should
-        var tickets = new ArrayList<Ticket>();
-        tickets.add(Ticket.builder().ticketType(TicketType.SENIOR).quantity(1).totalCost(17.50).build());
-        var transactionTotalCost = 17.50;
-        var expectedTransaction = Transaction.builder().transactionId(transactionId).customers(customerList)
-            .tickets(tickets).totalCost(transactionTotalCost).build();
+        var actualTransaction = transactionService.purchaseTickets(transaction);
+        var totalCost = 64.50;
+        var tickets = List.of(Ticket.builder().quantity(1).ticketType(TicketType.ADULT).totalCost(25.00).build(),
+            Ticket.builder().quantity(2).ticketType(TicketType.CHILDREN).totalCost(10.00).build(),
+            Ticket.builder().quantity(1).ticketType(TicketType.SENIOR).totalCost(17.50).build(),
+            Ticket.builder().quantity(1).ticketType(TicketType.TEEN).totalCost(12.00).build()
+        );
+        var expectedTransaction = Transaction.builder().transactionId(transactionID).customers(customers)
+            .totalCost(totalCost).tickets(tickets).build();
 
         assertEquals(expectedTransaction, actualTransaction);
     }
-
-    @Test
-    void shouldGet1AdultTickets() {
-        //given
-        var transactionId = 1L;
-        var customerList = new ArrayList<Customer>();
-        customerList.add(Customer.builder().name("Billy Kidd").age(36).build());
-        var transaction = Transaction.builder().transactionId(transactionId).customers(customerList).build();
-
-        //when
-        var actualTransaction = transactionService.purchaseTickets(transaction);
-
-        //should
-        var tickets = new ArrayList<Ticket>();
-        tickets.add(Ticket.builder().ticketType(TicketType.ADULT).quantity(1).totalCost(25.00).build());
-        var transactionTotalCost = 25.00;
-        var expectedTransaction = Transaction.builder().transactionId(transactionId).customers(customerList)
-            .tickets(tickets).totalCost(transactionTotalCost).build();
-
-        assertEquals(expectedTransaction, actualTransaction);
-    }
-
-    @Test
-    void shouldGet1ChildrenTickets() {
-        //given
-        var transactionId = 1L;
-        var customerList = new ArrayList<Customer>();
-        customerList.add(Customer.builder().name("Jane Doe").age(5).build());
-        var transaction = Transaction.builder().transactionId(transactionId).customers(customerList).build();
-
-        //when
-        var actualTransaction = transactionService.purchaseTickets(transaction);
-
-        //should
-        var tickets = new ArrayList<Ticket>();
-        tickets.add(Ticket.builder().ticketType(TicketType.CHILDREN).quantity(1).totalCost(5.00).build());
-        var transactionTotalCost = 5.00;
-        var expectedTransaction = Transaction.builder().transactionId(transactionId).customers(customerList)
-            .tickets(tickets).totalCost(transactionTotalCost).build();
-
-        assertEquals(expectedTransaction, actualTransaction);
-    }
-
-    @Test
-    void shouldGet2ChildrenTicketsAnd1SeniorTicket() {
-        //given
-        var transactionId = 1L;
-        var customerList = new ArrayList<Customer>();
-        customerList.add(Customer.builder().name("John Smith").age(70).build());
-        customerList.add(Customer.builder().name("Jane Doe").age(5).build());
-        customerList.add(Customer.builder().name("Bob Doe").age(6).build());
-        var transaction = Transaction.builder().transactionId(transactionId).customers(customerList).build();
-
-        //when
-        var actualTransaction = transactionService.purchaseTickets(transaction);
-
-        //should
-        var tickets = new ArrayList<Ticket>();
-        tickets.add(Ticket.builder().ticketType(TicketType.CHILDREN).quantity(2).totalCost(10.00).build());
-        tickets.add(Ticket.builder().ticketType(TicketType.SENIOR).quantity(1).totalCost(17.50).build());
-        var transactionTotalCost = 27.50;
-        var expectedTransaction = Transaction.builder().transactionId(transactionId).customers(customerList)
-            .tickets(tickets).totalCost(transactionTotalCost).build();
-
-        assertEquals(expectedTransaction, actualTransaction);
-    }
-
-    @Test
-    void shouldGet3ChildrenTicketsAnd1AdultTicketAnd1TeenTicket() {
-        //given
-        var transactionId = 2L;
-        var customerList = new ArrayList<Customer>();
-        customerList.add(Customer.builder().name("Billy Kidd").age(36).build());
-        customerList.add(Customer.builder().name("Zoe Daniels").age(3).build());
-        customerList.add(Customer.builder().name("George White").age(8).build());
-        customerList.add(Customer.builder().name("Tommy Anderson").age(9).build());
-        customerList.add(Customer.builder().name("Joe Smith").age(17).build());
-        var transaction = Transaction.builder().transactionId(transactionId).customers(customerList).build();
-
-        //when
-        var actualTransaction = transactionService.purchaseTickets(transaction);
-
-        //should
-        var tickets = new ArrayList<Ticket>();
-        tickets.add(Ticket.builder().ticketType(TicketType.ADULT).quantity(1).totalCost(25.00).build());
-        tickets.add(Ticket.builder().ticketType(TicketType.CHILDREN).quantity(3).totalCost(11.25).build());
-        tickets.add(Ticket.builder().ticketType(TicketType.TEEN).quantity(1).totalCost(12).build());
-        var transactionTotalCost = 48.25;
-        var expectedTransaction = Transaction.builder().transactionId(transactionId).customers(customerList)
-            .tickets(tickets).totalCost(transactionTotalCost).build();
-
-        assertEquals(expectedTransaction, actualTransaction);
-    }
-
-    @Test
-    void shouldGet1AdultTicketAnd1ChildrenTicketAnd1SeniorTicketAnd1TeenTicket() {
-        //given
-        var transactionId = 3L;
-        var customerList = new ArrayList<Customer>();
-        customerList.add(Customer.builder().name("Jesse James").age(36).build());
-        customerList.add(Customer.builder().name("Daniel Anderson").age(95).build());
-        customerList.add(Customer.builder().name("Mary Jones").age(15).build());
-        customerList.add(Customer.builder().name("Michelle Parker").age(10).build());
-        var transaction = Transaction.builder().transactionId(transactionId).customers(customerList).build();
-
-        //when
-        var actualTransaction = transactionService.purchaseTickets(transaction);
-
-        //should
-        var tickets = new ArrayList<Ticket>();
-        tickets.add(Ticket.builder().ticketType(TicketType.ADULT).quantity(1).totalCost(25.00).build());
-        tickets.add(Ticket.builder().ticketType(TicketType.CHILDREN).quantity(1).totalCost(5.00).build());
-        tickets.add(Ticket.builder().ticketType(TicketType.SENIOR).quantity(1).totalCost(17.50).build());
-        tickets.add(Ticket.builder().ticketType(TicketType.TEEN).quantity(1).totalCost(12.00).build());
-        var transactionTotalCost = 59.50;
-        var expectedTransaction = Transaction.builder().transactionId(transactionId).customers(customerList)
-            .tickets(tickets).totalCost(transactionTotalCost).build();
-
-        assertEquals(expectedTransaction, actualTransaction);
-    }
-
 }
