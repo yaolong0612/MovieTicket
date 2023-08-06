@@ -1,14 +1,9 @@
 package com.sportsbet.application;
 
 import com.sportsbet.BaseTest;
-import com.sportsbet.application.strategy.discount.ChildrenDiscountCalculator;
-import com.sportsbet.application.strategy.discount.NoDiscountCalculator;
-import com.sportsbet.application.strategy.discount.SeniorDiscountCalculator;
+import com.sportsbet.application.strategy.discount.TestDiscountCalculator;
 import com.sportsbet.application.strategy.discount.TicketDiscountCalculatorFactory;
-import com.sportsbet.application.strategy.price.AdultTicketPriceCalculator;
-import com.sportsbet.application.strategy.price.ChildrenTicketPriceCalculator;
-import com.sportsbet.application.strategy.price.SeniorTicketPriceCalculator;
-import com.sportsbet.application.strategy.price.TeenTicketPriceCalculator;
+import com.sportsbet.application.strategy.price.TestTicketPriceCalculator;
 import com.sportsbet.application.strategy.price.TicketPriceCalculatorFactory;
 import com.sportsbet.domain.Customer;
 import com.sportsbet.domain.Ticket;
@@ -33,6 +28,12 @@ public class TicketServiceTest extends BaseTest {
 
     @Mock
     private TicketDiscountCalculatorFactory ticketDiscountCalculatorFactory;
+
+    @Mock
+    private TestTicketPriceCalculator priceCalculator;
+
+    @Mock
+    private TestDiscountCalculator discountCalculator;
 
     @InjectMocks
     private TicketService ticketService;
@@ -95,18 +96,24 @@ public class TicketServiceTest extends BaseTest {
     @Test
     void testCreateTicket() {
         //given
-        var quantity = generateRandomInt(1, Integer.MAX_VALUE);
+        var quantity = 1;
+        var ticketPrice = 25.00;
         var ticketType = TicketType.ADULT;
+        var discountRate = 0.7;
 
         //when
         when(ticketPriceCalculatorFactory.getPriceCalculator(any(Ticket.class))).thenReturn(
-            new AdultTicketPriceCalculator());
+            priceCalculator);
         when(ticketDiscountCalculatorFactory.getPriceCalculator(any(Ticket.class))).thenReturn(
-            new NoDiscountCalculator());
+            discountCalculator);
+        when(priceCalculator.calculatePrice(any(Ticket.class))).thenReturn(
+            Ticket.builder().ticketType(ticketType).totalCost(ticketPrice * quantity).quantity(quantity)
+                .build());
+        when(discountCalculator.calculateDiscountRate(any(Ticket.class))).thenReturn(discountRate);
         var actualTicket = ticketService.createTicket(ticketType, quantity);
 
         //should
-        var expectedTotalCost = 25.00 * quantity;
+        var expectedTotalCost = ticketPrice * quantity * discountRate;
         var expectedTicket = Ticket.builder().ticketType(TicketType.ADULT).quantity(quantity)
             .totalCost(expectedTotalCost).build();
         assertEquals(expectedTicket, actualTicket);
