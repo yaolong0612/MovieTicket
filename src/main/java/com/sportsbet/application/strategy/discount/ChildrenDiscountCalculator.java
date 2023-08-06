@@ -1,6 +1,7 @@
 package com.sportsbet.application.strategy.discount;
 
 import com.sportsbet.domain.Ticket;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
@@ -10,11 +11,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class ChildrenDiscountCalculator implements TicketDiscountCalculator {
 
+    @Value("${application.ticket.discount.children}")
+    private double discountRate;
+
     /**
      * {@inheritDoc}
      */
     @Override
     public double calculateDiscountRate(Ticket ticket) {
-        return 0.75;
+        return discountRate;
     }
 }

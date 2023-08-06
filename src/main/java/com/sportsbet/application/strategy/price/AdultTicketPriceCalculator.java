@@ -2,6 +2,7 @@ package com.sportsbet.application.strategy.price;
 
 import com.sportsbet.domain.Ticket;
 import com.sportsbet.domain.TicketType;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
@@ -9,6 +10,9 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class AdultTicketPriceCalculator implements TicketPriceCalculator {
+
+    @Value("${application.ticket.price.adult}")
+    private double price;
 
     /**
      * {@inheritDoc}
@@ -24,7 +28,7 @@ public class AdultTicketPriceCalculator implements TicketPriceCalculator {
     @Override
     public Ticket calculatePrice(Ticket ticket) {
         checkTicketType(ticket.getTicketType());
-        var totalCost = ticket.getQuantity() * 25.00;
+        var totalCost = ticket.getQuantity() * price;
         ticket.setTotalCost(totalCost);
         return ticket;
     }

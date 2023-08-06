@@ -1,20 +1,24 @@
 package com.sportsbet.application.strategy.price;
 
 import com.sportsbet.BaseTest;
-import com.sportsbet.application.strategy.price.AdultTicketPriceCalculator;
 import com.sportsbet.domain.Ticket;
 import com.sportsbet.domain.TicketType;
 import com.sportsbet.infrastructure.error.ServiceException;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@SpringBootTest
 public class AdultTicketPriceCalculatorTest extends BaseTest {
 
-    @InjectMocks
+    @Autowired
     private AdultTicketPriceCalculator ticketPriceCalculator;
+    @Value("${application.ticket.price.adult}")
+    private double price;
 
     @Test
     void shouldGetAdultTicket() {
@@ -26,7 +30,7 @@ public class AdultTicketPriceCalculatorTest extends BaseTest {
         double actualTotalCost = ticketPriceCalculator.calculatePrice(ticket).getTotalCost();
 
         //should
-        double expectedActualTotalCost = 25.00 * quantity;
+        double expectedActualTotalCost = price * quantity;
 
         assertEquals(expectedActualTotalCost, actualTotalCost);
     }

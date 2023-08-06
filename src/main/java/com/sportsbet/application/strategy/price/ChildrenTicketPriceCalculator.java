@@ -2,6 +2,7 @@ package com.sportsbet.application.strategy.price;
 
 import com.sportsbet.domain.Ticket;
 import com.sportsbet.domain.TicketType;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
@@ -9,6 +10,9 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class ChildrenTicketPriceCalculator implements TicketPriceCalculator {
+
+    @Value("${application.ticket.price.children}")
+    private double price;
 
     /**
      * {@inheritDoc}

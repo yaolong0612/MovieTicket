@@ -4,14 +4,19 @@ import com.sportsbet.BaseTest;
 import com.sportsbet.domain.Ticket;
 import com.sportsbet.domain.TicketType;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@SpringBootTest
 public class SeniorDiscountCalculatorTest extends BaseTest {
 
-    @InjectMocks
+    @Autowired
     private SeniorDiscountCalculator discountCalculator;
+    @Value("${application.ticket.discount.senior}")
+    private double expectedDiscountRate;
 
     @Test
     void shouldGetSeniorDiscountCalculator() {
@@ -23,8 +28,6 @@ public class SeniorDiscountCalculatorTest extends BaseTest {
         var actualDiscountRate = discountCalculator.calculateDiscountRate(ticket);
 
         //should
-        var expectedDiscountRate = 0.70;
-
         assertEquals(expectedDiscountRate, actualDiscountRate);
     }
 
